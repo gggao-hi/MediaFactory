@@ -14,25 +14,19 @@ class ImageColorActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MediaFactoryTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    Greeting("Android")
-                }
-            }
+            DefaultPreview()
         }
     }
-}
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MediaFactoryTheme {
-        Greeting("Android")
+    @Preview(showBackground = true)
+    @Composable
+    private fun DefaultPreview() {
+        MediaFactoryTheme(title = intent.getStringExtra("title") ?: "") {
+            // A surface container using the 'background' color from the theme
+            Surface(color = MaterialTheme.colors.background) {
+
+            }
+        }
     }
 }

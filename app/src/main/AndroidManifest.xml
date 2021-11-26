@@ -3,6 +3,7 @@
     package="com.ggg.mediafactory">
 
     <application
+        android:name="com.ggg.MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -10,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MediaFactory">
         <activity
-            android:name="com.ggg.imagecolor.ImageColorActivity"
+            android:name="com.ggg.imagecolor.activity.ImageColorActivity"
             android:exported="false"
             android:label="@string/title_activity_image_color"
             android:theme="@style/Theme.MediaFactory.NoActionBar" />

@@ -46,6 +46,7 @@ android {
             resolutionStrategy {
                 force dep_names.core_ktx
                 force dep_names.lifecycle_runtime_ktx
+                force dep_names.activity_compose
             }
         }
     }

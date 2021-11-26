@@ -3,18 +3,24 @@ package com.ggg.enter.activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
+import com.ggg.enter.model.EnterRepository
 import com.ggg.mediafactory.ui.theme.MediaFactoryTheme
 
 class MainActivity : ComponentActivity() {
+    private val enterRepository = EnterRepository()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -24,22 +30,27 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun Content() {
-        MediaFactoryTheme {
-            ConstraintLayout {
-                val (appBar, column) = createRefs()
-                TopAppBar(
-                    modifier = Modifier.constrainAs(appBar) {
-                        top.linkTo(parent.top)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        height = Dimension.value(60.dp)
-                    }) {
-                    Text(text = "Media Factory")
-                }
-                Column {
-
+        MediaFactoryTheme(title = "Enters") {
+            Column(
+                modifier = Modifier
+                    .verticalScroll(ScrollState(1))
+            ) {
+                enterRepository.obtainEnters().forEach {
+                    TextButton(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 1.dp),
+                        onClick = { it.handler() },
+                        colors = ButtonDefaults.textButtonColors(
+                            backgroundColor = Color.Cyan,
+                            contentColor = Color.Red
+                        ),
+                    ) {
+                        Text(text = it.name)
+                    }
                 }
             }
+
         }
     }
 
