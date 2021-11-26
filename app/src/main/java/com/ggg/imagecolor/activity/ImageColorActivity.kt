@@ -1,4 +1,4 @@
-package com.ggg.mediafactory
+package com.ggg.imagecolor.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.ggg.mediafactory.ui.theme.MediaFactoryTheme
 
-class MainActivity : ComponentActivity() {
+class ImageColorActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

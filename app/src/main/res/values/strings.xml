@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MediaFactory</string>
+    <string name="title_activity_image_color">ImageColorActivity</string>
 </resources>
