@@ -5,12 +5,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
@@ -31,9 +33,12 @@ class ImageColorActivity : ComponentActivity() {
 
     @Composable
     private fun Content() {
-        val source = BitmapFactory.decodeResource(resources, R.mipmap.ic_test)
+
         MediaFactoryTheme(title = intent.getStringExtra("title") ?: "") {
-            Column {
+            Column(modifier = Modifier.verticalScroll(ScrollState(0))) {
+                var source by remember {
+                    mutableStateOf(BitmapFactory.decodeResource(resources, R.mipmap.ic_test))
+                }
                 Image(
                     painter = BitmapPainter(
                         source.asImageBitmap()
@@ -41,11 +46,17 @@ class ImageColorActivity : ComponentActivity() {
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(onClick = {
-                    NativeLib.changeImageGray(
-                        ByteBuffer.allocate(source.byteCount).array(), source.width, source.height
+                    source = BitmapFactory.decodeByteArray(
+                        NativeLib.changeImageGray(
+                            ByteBuffer.allocate(source.byteCount).array(),
+                            source.width,
+                            source.height
+                        ),
+                        source.width,
+                        source.height
                     )
                 }) {
-                    Text(text = "ss")
+                    Text(text = "调整")
                 }
 
             }

@@ -1,7 +1,7 @@
 #include <jni.h>
 #include <string>
 #include "handler.h"
-
+#include <thread>
 extern "C"
 JNIEXPORT jbyteArray JNICALL
 Java_com_ggg_handler_NativeLib_changeImageGray(JNIEnv *env, jobject thiz, jbyteArray buff, jint width,
