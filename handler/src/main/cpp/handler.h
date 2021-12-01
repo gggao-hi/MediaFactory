@@ -2,6 +2,7 @@
 // Created by ggg on 2021/11/27.
 //
 #include <android/log.h>
+#include <android/bitmap.h>
 
 #ifndef MEDIAFACTORY_HANDLER_H
 #define MEDIAFACTORY_HANDLER_H

@@ -36,8 +36,10 @@ class ImageColorActivity : ComponentActivity() {
 
         MediaFactoryTheme(title = intent.getStringExtra("title") ?: "") {
             Column(modifier = Modifier.verticalScroll(ScrollState(0))) {
-                var source by remember {
-                    mutableStateOf(BitmapFactory.decodeResource(resources, R.mipmap.ic_test))
+                val source by remember {
+                    mutableStateOf(BitmapFactory.decodeResource(resources, R.mipmap.ic_test,BitmapFactory.Options().apply {
+
+                    }))
                 }
                 Image(
                     painter = BitmapPainter(
@@ -46,15 +48,17 @@ class ImageColorActivity : ComponentActivity() {
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(onClick = {
-                    source = BitmapFactory.decodeByteArray(
-                        NativeLib.changeImageGray(
-                            ByteBuffer.allocate(source.byteCount).array(),
-                            source.width,
-                            source.height
-                        ),
+                    val pixels = IntArray(source.width * source.height)
+                    source.getPixels(pixels, 0, source.width, 0, 0, source.width, source.height)
+                    val result = NativeLib.changeImageGray(
+                        pixels,
                         source.width,
                         source.height
                     )
+                    source.setPixels(
+                        result, 0, source.width, 0, 0, source.width, source.height
+                    )
+
                 }) {
                     Text(text = "调整")
                 }

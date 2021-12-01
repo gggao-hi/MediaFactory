@@ -4,7 +4,7 @@
 # Sets the minimum version of CMake required to build the native library.
 
 cmake_minimum_required(VERSION 3.10.2)
-
+SET(CMAKE_BUILD_TYPE "Debug")
 # Declares and names the project.
 
 project("handler")
@@ -28,13 +28,14 @@ find_library(
         log-lib
         log)
 
+
 # Specifies libraries CMake should link to your target library. You
 # can link multiple libraries, such as libraries you define in this
 # build script, prebuilt third-party libraries, or system libraries.
 
 target_link_libraries( # Specifies the target library.
         handler
-
+        jnigraphics
         # Links the target library to the log library
         # included in the NDK.
         ${log-lib})

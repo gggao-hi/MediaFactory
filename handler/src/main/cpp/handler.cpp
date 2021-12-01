@@ -3,11 +3,11 @@
 #include "handler.h"
 #include <thread>
 extern "C"
-JNIEXPORT jbyteArray JNICALL
-Java_com_ggg_handler_NativeLib_changeImageGray(JNIEnv *env, jobject thiz, jbyteArray buff, jint width,
+JNIEXPORT jintArray JNICALL
+Java_com_ggg_handler_NativeLib_changeImageGray(JNIEnv *env, jobject thiz, jintArray buff, jint width,
                                                jint height) {
     LOGD("Gray = R*0.299 + G*0.587 + B*0.114, 128>>7 =1");
-    jbyte *buf_ptr = (*env).GetByteArrayElements(buff, nullptr);
+    jint *buf_ptr = (*env).GetIntArrayElements(buff, nullptr);
     int alpha = 0xFF;
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
@@ -21,8 +21,8 @@ Java_com_ggg_handler_NativeLib_changeImageGray(JNIEnv *env, jobject thiz, jbyteA
         }
     }
     int size = width * height;
-    jbyteArray result = (*env).NewByteArray(size);
-    (*env).SetByteArrayRegion(result, 0, size, buf_ptr);
+    jintArray result = (*env).NewIntArray(size);
+    (*env).SetIntArrayRegion(result, 0, size, buf_ptr);
     return result;
 
 }
