@@ -4,6 +4,8 @@
 #include <android/log.h>
 #include <android/bitmap.h>
 
+const int FAILED = 0;
+const int SUCCESS = 1;
 #ifndef MEDIAFACTORY_HANDLER_H
 #define MEDIAFACTORY_HANDLER_H
 #define TAG "handler"

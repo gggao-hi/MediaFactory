@@ -1,9 +1,11 @@
 package com.ggg.handler
 
+import android.graphics.Bitmap
+
 object NativeLib {
     init {
         System.loadLibrary("handler")
     }
 
-    external fun changeImageGray(buff: IntArray, width: Int, height: Int): IntArray
+    external fun negative(bitmap: Bitmap): Int
 }
