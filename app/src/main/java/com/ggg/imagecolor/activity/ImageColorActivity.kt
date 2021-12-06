@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import com.ggg.handler.NativeLib
 import com.ggg.mediafactory.R
 import com.ggg.mediafactory.ui.theme.MediaFactoryTheme
-import java.nio.ByteBuffer
 
 class ImageColorActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,12 +33,14 @@ class ImageColorActivity : ComponentActivity() {
     @Composable
     private fun Content() {
 
+        val src = BitmapFactory.decodeResource(resources, R.mipmap.ic_test)
         MediaFactoryTheme(title = intent.getStringExtra("title") ?: "") {
+            var title: String by remember {
+                mutableStateOf(getString(R.string.film))
+            }
             Column(modifier = Modifier.verticalScroll(ScrollState(0))) {
                 val source by remember {
-                    mutableStateOf(BitmapFactory.decodeResource(resources, R.mipmap.ic_test,BitmapFactory.Options().apply {
-
-                    }))
+                    mutableStateOf(src)
                 }
                 Image(
                     painter = BitmapPainter(
@@ -48,19 +49,15 @@ class ImageColorActivity : ComponentActivity() {
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(onClick = {
-                    val pixels = IntArray(source.width * source.height)
-                    source.getPixels(pixels, 0, source.width, 0, 0, source.width, source.height)
-                    val result = NativeLib.changeImageGray(
-                        pixels,
-                        source.width,
-                        source.height
-                    )
-                    source.setPixels(
-                        result, 0, source.width, 0, 0, source.width, source.height
-                    )
-
+                    if (NativeLib.negative(src) == 1) {
+                        title = if (title == getString(R.string.original)) {
+                            getString(R.string.film)
+                        } else {
+                            getString(R.string.original)
+                        }
+                    }
                 }) {
-                    Text(text = "调整")
+                    Text(text = title)
                 }
 
             }

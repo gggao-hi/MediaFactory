@@ -3,6 +3,9 @@
 //
 #include <android/log.h>
 #include <android/bitmap.h>
+#include <jni.h>
+#include <string>
+#include <math.h>
 
 const int FAILED = 0;
 const int SUCCESS = 1;

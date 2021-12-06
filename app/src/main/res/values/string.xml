@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="film">照片底片</string>
+    <string name="original">照片原图</string>
+    <string name="original_to_film">底片转换</string>
+</resources>
