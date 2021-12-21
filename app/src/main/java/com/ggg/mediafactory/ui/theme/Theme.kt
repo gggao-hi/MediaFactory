@@ -2,11 +2,10 @@ package com.ggg.mediafactory.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.sharp.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
+import com.ggg.MainApplication
 
 private val DarkColorPalette = darkColors(
     primary = Purple200,
@@ -18,15 +17,6 @@ private val LightColorPalette = lightColors(
     primary = Purple500,
     primaryVariant = Purple700,
     secondary = Teal200
-
-    /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
 )
 
 @Composable
@@ -48,6 +38,11 @@ fun MediaFactoryTheme(
     ) {
         Scaffold(topBar = {
             TopAppBar {
+                Button(onClick = {
+                    MainApplication.getCurrentActivity()?.onBackPressed()
+                }) {
+                    Icon(imageVector = Icons.Sharp.ArrowBack, contentDescription = "")
+                }
                 Text(text = title)
             }
         }) {

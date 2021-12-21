@@ -36,6 +36,7 @@ Java_com_ggg_handler_NativeLib_negative(JNIEnv *env, jobject thiz, jobject bitma
             blue = 255 - blue;
             uint32_t newColor = (alpha << 24) | (blue << 16) | (green << 8) | red;
             srcPix[w * i + j] = newColor;
+
         }
     }
     AndroidBitmap_unlockPixels(env, bitmap);

@@ -7,5 +7,5 @@ object NativeLib {
         System.loadLibrary("handler")
     }
 
-    external fun negative(bitmap: Bitmap): Int
+    external fun negative(bitmap: Bitmap?): Int
 }
