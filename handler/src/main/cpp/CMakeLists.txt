@@ -15,14 +15,14 @@ project("handler")
 # Gradle automatically packages shared libraries with your APK.
 
 add_library( # Sets the name of the library.
-        handler
+        image_handler
 
         # Sets the library as a shared library.
         SHARED
 
         # Provides a relative path to your source file(s).
-        handler.cpp)
-
+        image/image_handler.cpp
+        video/video_handler.cpp)
 
 find_library(
         log-lib
@@ -34,7 +34,7 @@ find_library(
 # build script, prebuilt third-party libraries, or system libraries.
 
 target_link_libraries( # Specifies the target library.
-        handler
+        image_handler
         jnigraphics
         # Links the target library to the log library
         # included in the NDK.

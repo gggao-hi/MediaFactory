@@ -4,4 +4,6 @@
     <string name="film">照片底片</string>
     <string name="original">照片原图</string>
     <string name="original_to_film">底片转换</string>
+    <string name="flip_vertical">上下翻转</string>
+    <string name="flip_horizontal">左右翻转</string>
 </resources>

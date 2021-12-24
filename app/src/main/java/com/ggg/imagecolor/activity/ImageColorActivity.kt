@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ggg.handler.NativeLib
+import com.ggg.handler.MediaHandler
 import com.ggg.mediafactory.R
 import com.ggg.mediafactory.ui.theme.MediaFactoryTheme
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -66,7 +66,7 @@ class ImageColorActivity : ComponentActivity() {
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(onClick = {
-                    if (NativeLib.negative(source) == 1) {
+                    if (MediaHandler.negative(source) == 1) {
                         title = if (title == getString(R.string.original)) {
                             getString(R.string.film)
                         } else {
@@ -76,7 +76,19 @@ class ImageColorActivity : ComponentActivity() {
                 }) {
                     Text(text = title)
                 }
+                Spacer(modifier = Modifier.height(20.dp))
+                Button(onClick = {
+                    MediaHandler.flip(source, MediaHandler.FlipDirection.VERTICAL)
 
+                }) {
+                    Text(text = getString(R.string.flip_vertical))
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+                Button(onClick = {
+                    MediaHandler.flip(source, MediaHandler.FlipDirection.HORIZONTAL)
+                }) {
+                    Text(text = getString(R.string.flip_horizontal))
+                }
             }
 
         }
