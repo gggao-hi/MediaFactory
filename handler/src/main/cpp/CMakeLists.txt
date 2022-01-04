@@ -15,7 +15,7 @@ project("handler")
 # Gradle automatically packages shared libraries with your APK.
 
 add_library( # Sets the name of the library.
-        image_handler
+        media_handler
 
         # Sets the library as a shared library.
         SHARED

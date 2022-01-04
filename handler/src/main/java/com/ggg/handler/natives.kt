@@ -5,14 +5,12 @@ import androidx.annotation.IntDef
 
 object MediaHandler {
     init {
-        System.loadLibrary("image_handler")
-
+        System.loadLibrary("media_handler")
     }
 
     external fun negative(bitmap: Bitmap?): Int
 
     external fun flip(bitmap: Bitmap?, @FlipDirection direction: Int): Int
-
 
     @Retention(AnnotationRetention.SOURCE)
     @IntDef(FlipDirection.HORIZONTAL, FlipDirection.VERTICAL)
@@ -23,6 +21,6 @@ object MediaHandler {
         }
     }
 
-    data class SplitPathBean(val videoPath: String?, val soundPath: String?)
+
 }
 
