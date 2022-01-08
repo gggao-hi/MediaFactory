@@ -2,7 +2,7 @@ package com.ggg.enter.model
 
 import android.content.Intent
 import com.ggg.MainApplication
-import com.ggg.imagecolor.activity.ImageColorActivity
+import com.ggg.image.activity.ImageActivity
 import com.ggg.mediafactory.R
 
 
@@ -15,7 +15,7 @@ class EnterRepository {
         return listOf(
             EnterBean(activity?.getString(R.string.original_to_film) ?: "") {
                 MainApplication.getCurrentActivity()?.apply {
-                    startActivity(Intent(this, ImageColorActivity::class.java).apply {
+                    startActivity(Intent(this, ImageActivity::class.java).apply {
                         putExtra("title", getString(R.string.original_to_film))
                     })
                 }

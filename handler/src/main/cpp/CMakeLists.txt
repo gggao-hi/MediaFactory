@@ -22,7 +22,8 @@ add_library( # Sets the name of the library.
 
         # Provides a relative path to your source file(s).
         image/image_handler.cpp
-        video/video_handler.cpp)
+        video/video_handler.cpp
+        video/video_dealer.cpp)
 
 find_library(
         log-lib
@@ -34,7 +35,7 @@ find_library(
 # build script, prebuilt third-party libraries, or system libraries.
 
 target_link_libraries( # Specifies the target library.
-        image_handler
+        media_handler
         jnigraphics
         # Links the target library to the log library
         # included in the NDK.
