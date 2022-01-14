@@ -54,9 +54,7 @@ class VideoPlayer(private val context: Context) {
                         surfaceHolder = holder
                         holder.addCallback(object : SurfaceHolder.Callback {
                             override fun surfaceCreated(holder: SurfaceHolder) {
-                                if (videoPath.isNotEmpty()) {
-                                    play(videoPath)
-                                }
+                                play(videoPath)
                             }
 
                             override fun surfaceChanged(
@@ -86,8 +84,11 @@ class VideoPlayer(private val context: Context) {
 
     private fun play(videoPath: String) {
         mediaPlayer.setDisplay(surfaceHolder)
-        mediaPlayer.setDataSource(videoPath)
-        mediaPlayer.prepare()
-        mediaPlayer.start()
+        if (videoPath.isNotEmpty()) {
+            mediaPlayer.setDataSource(videoPath)
+            mediaPlayer.prepare()
+            mediaPlayer.start()
+        }
+
     }
 }
