@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.Flow
  */
 class VideoPlayer(private val context: Context) {
     private var surfaceHolder: SurfaceHolder? = null
+    var currentVideoPath: String? = null
     private val mediaPlayer = MediaPlayer().apply {
         val attributes = AudioAttributes.Builder()
             .setLegacyStreamType(AudioManager.STREAM_MUSIC)
@@ -92,6 +93,7 @@ class VideoPlayer(private val context: Context) {
     private fun play(videoPath: String) {
         mediaPlayer.setDisplay(surfaceHolder)
         if (videoPath.isNotEmpty()) {
+            currentVideoPath = videoPath
             mediaPlayer.setDataSource(context, Uri.parse(videoPath))
             mediaPlayer.prepare()
             mediaPlayer.setOnPreparedListener {
