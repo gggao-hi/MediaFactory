@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 #include "../commons/log.h"
+#include "libavcodec/avcodec.h"
 
 using namespace std;
 #ifndef MEDIAFACTORY_VIDEO_DEALER_H

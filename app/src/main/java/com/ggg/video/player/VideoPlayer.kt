@@ -4,15 +4,19 @@ import android.content.Context
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
+import android.net.Uri
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.widget.LinearLayout
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.viewinterop.AndroidView
+import kotlinx.coroutines.flow.Flow
 
 
 /**
@@ -20,6 +24,7 @@ import androidx.compose.ui.viewinterop.AndroidView
  */
 class VideoPlayer(private val context: Context) {
     private var surfaceHolder: SurfaceHolder? = null
+    var currentVideoPath: String? = null
     private val mediaPlayer = MediaPlayer().apply {
         val attributes = AudioAttributes.Builder()
             .setLegacyStreamType(AudioManager.STREAM_MUSIC)
@@ -29,13 +34,16 @@ class VideoPlayer(private val context: Context) {
 
     fun resetVideoPath(path: String) {
         mediaPlayer.reset()
-        mediaPlayer.setDataSource(path)
-        mediaPlayer.prepare()
-        mediaPlayer.start()
+        play(path)
     }
 
     @Composable
-    fun InitPlayer(height: Dp, videoPath: String) {
+    fun InitPlayer(height: Dp, videoPath: Flow<String>) {
+        val path: String by videoPath.collectAsState(initial = "").apply {
+            if (value.isNotEmpty()) {
+                play(value)
+            }
+        }
         AndroidView(
             factory = {
                 return@AndroidView LinearLayout(it).apply {
@@ -54,7 +62,7 @@ class VideoPlayer(private val context: Context) {
                         surfaceHolder = holder
                         holder.addCallback(object : SurfaceHolder.Callback {
                             override fun surfaceCreated(holder: SurfaceHolder) {
-                                play(videoPath)
+                                play(path)
                             }
 
                             override fun surfaceChanged(
@@ -85,9 +93,12 @@ class VideoPlayer(private val context: Context) {
     private fun play(videoPath: String) {
         mediaPlayer.setDisplay(surfaceHolder)
         if (videoPath.isNotEmpty()) {
-            mediaPlayer.setDataSource(videoPath)
+            currentVideoPath = videoPath
+            mediaPlayer.setDataSource(context, Uri.parse(videoPath))
             mediaPlayer.prepare()
-            mediaPlayer.start()
+            mediaPlayer.setOnPreparedListener {
+                mediaPlayer.start()
+            }
         }
 
     }

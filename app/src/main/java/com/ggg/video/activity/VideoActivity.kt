@@ -26,14 +26,13 @@ class VideoActivity : ComponentActivity() {
 
     @Composable
     private fun Content() {
-
         MediaFactoryTheme(title = "${intent.getStringExtra("title")}") {
             val video: Flow<String> by remember {
                 mutableStateOf(viewModel.getVideoPath())
             }
-            val path: String by video.collectAsState(initial = "")
+
             Column(modifier = Modifier.verticalScroll(ScrollState(0))) {
-                player.InitPlayer(300.dp, path)
+                player.InitPlayer(300.dp, video)
             }
         }
     }

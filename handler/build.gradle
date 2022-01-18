@@ -7,12 +7,16 @@ apply from: '../dependence.gradle'
 
 android {
     defaultConfig {
+        ndk {
+            abiFilters 'armeabi-v7a','x86'
+        }
         externalNativeBuild {
             cmake {
                 cppFlags "-std=c++17"
             }
         }
     }
+
     externalNativeBuild {
         cmake {
             path "src/main/cpp/CMakeLists.txt"
