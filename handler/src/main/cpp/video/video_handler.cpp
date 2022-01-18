@@ -13,21 +13,22 @@ JNIEXPORT jobject JNICALL videoCommandHandler(JNIEnv *env, jobject clazz, jobjec
                                         env->GetFieldID(commandClazz, "paths", "Ljava/util/Map;"));
     jint type = env->GetIntField(command,
                                  env->GetFieldID(commandClazz, "type", "I"));
+    auto *pHandler = new VideoHandler;
     LOGD("command:%d", type);
     switch (type) {
         case TYPE_SPLIT_SOUND:
-            VideoHandler::splitVideo("");
+            pHandler->splitVideo("");
             break;
 
         case TYPE_VIDEO_JOINT: {
             vector<string> paths;
-            VideoHandler::jointVideo(paths);
+            pHandler->jointVideo(paths);
 
         }
             break;
         case TYPE_ADD_INK: {
             map<string, string> paths;
-            VideoHandler::addInk(paths);
+            pHandler->addInk(paths);
 
         }
             break;

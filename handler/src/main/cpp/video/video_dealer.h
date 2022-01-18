@@ -4,8 +4,13 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <stdio.h>
+#include <time.h>
 #include "../commons/log.h"
 #include "libavcodec/avcodec.h"
+#include "libavformat/avformat.h"
+#include "libswscale/swscale.h"
+#include "libavutil/avutil.h"
 
 using namespace std;
 #ifndef MEDIAFACTORY_VIDEO_DEALER_H
@@ -16,12 +21,51 @@ struct SplitPath {
 };
 
 class VideoHandler {
+private:
+    AVFormatContext *pFormatCtx;
+    AVCodecContext *pCodecCtx;
+    AVFrame *pFrame, *pFrameYUV;
+    AVPacket *packet;
+    SwsContext *imgConvertCtx;
+    FILE *fpYUV;
+
+    static void ffmpegLog(void *ptr, int level, const char *fmt, va_list vl) {
+        FILE *fp = fopen("/storage/emulated/0/av_log.txt", "a+");
+        if (fp) {
+            vfprintf(fp, fmt, vl);
+            fflush(fp);
+            fclose(fp);
+        }
+    }
+
+    void init() {
+        av_log_set_callback(ffmpegLog);
+        avformat_network_init();
+
+        pFormatCtx=avformat_alloc_context();
+
+    }
+
+    void unInit() {
+        avformat_network_deinit();
+    }
+
 public:
-    static SplitPath *splitVideo(string videoPath);
+    VideoHandler() {
+        init();
+    }
 
-    static string *jointVideo(vector<string> videoPath);
+    ~VideoHandler() {
+        unInit();
+    }
 
-    static string *addInk(map<string, string> paths);
+    string *decode(string videoPath);
+
+    SplitPath *splitVideo(string videoPath);
+
+    string *jointVideo(vector<string> videoPath);
+
+    string *addInk(map<string, string> paths);
 };
 
 #endif //MEDIAFACTORY_VIDEO_DEALER_H
