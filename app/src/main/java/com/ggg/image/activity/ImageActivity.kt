@@ -83,7 +83,6 @@ class ImageActivity : ComponentActivity() {
                 }
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(onClick = {
-                    MediaHandler.sendVideoCommand(MediaHandler.SplitVideoCommand(""))
                     MediaHandler.flip(source, MediaHandler.FlipDirection.HORIZONTAL)
                 }) {
                     Text(text = getString(R.string.flip_horizontal))
