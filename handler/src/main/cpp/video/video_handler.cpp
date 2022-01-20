@@ -6,37 +6,34 @@
 #include "video_dealer.h"
 
 
-JNIEXPORT jobject JNICALL videoCommandHandler(JNIEnv *env, jobject clazz, jobject command) {
+JNIEXPORT jint JNICALL videoCommandHandler(JNIEnv *env, jobject clazz, jobject command) {
 
     jclass commandClazz = env->FindClass("com/ggg/handler/MediaHandler$VideoCommand");
     jobject paths = env->GetObjectField(command,
                                         env->GetFieldID(commandClazz, "paths", "Ljava/util/Map;"));
     jint type = env->GetIntField(command,
                                  env->GetFieldID(commandClazz, "type", "I"));
-    auto *pHandler = new VideoHandler;
+    auto *pHandler = new VideoHandler(env);
     LOGD("command:%d", type);
     switch (type) {
         case TYPE_SPLIT_SOUND:
-            pHandler->splitVideo("");
-            break;
+            return pHandler->splitVideo(paths);
 
-        case TYPE_VIDEO_JOINT: {
-            vector<string> paths;
-            pHandler->jointVideo(paths);
+        case TYPE_VIDEO_JOINT:
 
-        }
-            break;
-        case TYPE_ADD_INK: {
-            map<string, string> paths;
-            pHandler->addInk(paths);
+            return pHandler->jointVideo(paths);
 
-        }
-            break;
+        case TYPE_ADD_INK:
+            return pHandler->addInk(paths);
+
+        case TYPE_DECODER:
+            return pHandler->decode(paths);
+
         default:
             break;
 
     }
-    return nullptr;
+    return -1;
 }
 
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *jvm, void *reserved) {
@@ -47,7 +44,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *jvm, void *reserved) {
     jclass clazz = env->FindClass("com/ggg/handler/MediaHandler");
 
     JNINativeMethod methods[] = {{"sendVideoCommand",
-                                         "(Lcom/ggg/handler/MediaHandler$VideoCommand;)Ljava/util/Map;",
+                                         "(Lcom/ggg/handler/MediaHandler$VideoCommand;)I",
                                          (void *) videoCommandHandler}};
 
     if (env->RegisterNatives(clazz, methods, sizeof(methods) / sizeof(methods[0]))) {

@@ -21,11 +21,18 @@ object MediaHandler {
         }
     }
 
-    external fun sendVideoCommand(command: VideoCommand): Map<String, String>
+    external fun sendVideoCommand(command: VideoCommand): Int
 
     sealed class VideoCommand(val type: Int, val paths: Map<String, String>)
 
     data class SplitVideoCommand(val path: String) :
         VideoCommand(101, mutableMapOf<String, String>().apply { put("videoPath", path) })
+
+    data class DecodeCommand(val videoPath: String?, val outPath: String?) :
+        VideoCommand(103, mutableMapOf<String, String>().apply {
+            videoPath?.let { put("videoPath", it) }
+            outPath?.let { put("outPath", it) }
+
+        })
 }
 
