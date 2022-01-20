@@ -8,7 +8,7 @@ apply from: '../dependence.gradle'
 android {
     defaultConfig {
         ndk {
-            abiFilters 'armeabi-v7a','x86'
+            abiFilters 'arm64-v8a','x86_64'
         }
         externalNativeBuild {
             cmake {

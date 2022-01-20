@@ -1,33 +1,32 @@
 
+#https://gitee.com/hangliebe/resource/tree/master/shellorbat/ffmpeg
+
 export NDK=/mnt/d/soft/linuxNDK/android-ndk-r21e-linux-x86_64/android-ndk-r21e
 export SYSROOT=$NDK/platforms/android-24/arch-arm
 export TOOLCHAIN=$NDK/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64
-export CPU=arm
+export CC=$TOOLCHAIN//bin/aarch64-linux-android21-clang
 export PREFIX=../so
-export ADDI_CFLAGS="-marm"
 
 build_one()
 {
     ./configure \
         --prefix=$PREFIX \
-        --disable-shared \
+        --enable-shared \
         --enable-static \
         --disable-doc \
-        --disable-ffmpeg \
-        --disable-ffplay \
         --disable-ffprobe \
         --disable-ffserver \
         --disable-doc \
         --disable-symver \
         --enable-small \
         --cross-prefix=$TOOLCHAIN/bin/arm-linux-androideabi- \
-        --target-os=linux \
-        --arch=arm \
+        -cc=${CC}
+        --target-os=android  \
+        --arch=aarch64 \
         --enable-cross-compile \
         --sysroot=$SYSROOT \
-        --extra-cflags="-Os -fpic $ADDI_CFLAGS" \
-        --extra-ldflags="$ADDI_LDFLAGS" \
-        $ADDITIONAL_CONFIGURE_FLAG
+        --extra-cflags="-O3 -fPIC" \
+
     make clean
     make
     make install
