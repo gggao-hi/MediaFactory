@@ -1,7 +1,6 @@
 //
 // Created by Administrator on 2022/1/8.
 //
-#ifdef __cplusplus
 extern "C" {
 
 #include "libavcodec/avcodec.h"
@@ -9,11 +8,7 @@ extern "C" {
 #include "libswscale/swscale.h"
 #include "libavutil/avutil.h"
 #include "libavutil/imgutils.h"
-
-#endif
-#ifdef __cplusplus
 }
-#endif
 
 #include <string>
 #include <map>

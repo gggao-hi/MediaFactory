@@ -5,7 +5,7 @@ import androidx.annotation.IntDef
 
 object MediaHandler {
     init {
-        System.loadLibrary("media_handler")
+        System.loadLibrary("handler")
     }
 
     external fun negative(bitmap: Bitmap?): Int
