@@ -1,7 +1,6 @@
 //
 // Created by Administrator on 2022/1/8.
 //
-#ifdef __cplusplus
 extern "C" {
 
 #include "libavcodec/avcodec.h"
@@ -9,11 +8,7 @@ extern "C" {
 #include "libswscale/swscale.h"
 #include "libavutil/avutil.h"
 #include "libavutil/imgutils.h"
-
-#endif
-#ifdef __cplusplus
 }
-#endif
 
 #include <string>
 #include <map>
@@ -22,13 +17,6 @@ extern "C" {
 #include "../commons/log.h"
 
 using namespace std;
-#ifndef MEDIAFACTORY_VIDEO_DEALER_H
-
-#define MEDIAFACTORY_VIDEO_DEALER_H
-struct SplitPath {
-    string videoPath;
-    string soundPath;
-};
 
 class VideoHandler {
 private:
@@ -106,5 +94,3 @@ public:
 
     int addInk(jobject params);
 };
-
-#endif //MEDIAFACTORY_VIDEO_DEALER_H

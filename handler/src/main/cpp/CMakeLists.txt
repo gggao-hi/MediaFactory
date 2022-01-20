@@ -38,7 +38,7 @@ add_library(libswscale_lib SHARED IMPORTED)
 set_target_properties(libswscale_lib PROPERTIES IMPORTED_LOCATION ${LIB_SRC_DIR}/libswscale.so)
 
 add_library( # Sets the name of the library.
-        media_handler
+        handler
 
         # Sets the library as a shared library.
         SHARED
@@ -58,7 +58,7 @@ find_library(
 # build script, prebuilt third-party libraries, or system libraries.
 
 target_link_libraries( # Specifies the target library.
-        media_handler
+        handler
         jnigraphics
         ${libavcodec_lib}
         ${libavdevice_lib}
