@@ -17,13 +17,6 @@ extern "C" {
 #include "../commons/log.h"
 
 using namespace std;
-#ifndef MEDIAFACTORY_VIDEO_DEALER_H
-
-#define MEDIAFACTORY_VIDEO_DEALER_H
-struct SplitPath {
-    string videoPath;
-    string soundPath;
-};
 
 class VideoHandler {
 private:
@@ -101,5 +94,3 @@ public:
 
     int addInk(jobject params);
 };
-
-#endif //MEDIAFACTORY_VIDEO_DEALER_H

@@ -111,21 +111,17 @@ int VideoHandler::decode(jobject params) {
 
 int VideoHandler::splitVideo(jobject params) {
     LOGD("splitVideo");
-    auto *splitPath = new SplitPath;
-    splitPath->videoPath = "video";
-    splitPath->soundPath = "sound";
+
     return 0;
 }
 
 int VideoHandler::jointVideo(jobject params) {
     LOGD("jointVideo");
-    auto *path = new string;
     return 0;
 }
 
 int VideoHandler::addInk(jobject params) {
     LOGD("addInk");
-    auto *path = new string;
     return 0;
 }
 
