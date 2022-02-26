@@ -1,14 +1,14 @@
 //
 // Created by Administrator on 2022/1/8.
 //
-extern "C" {
-
-#include "libavcodec/avcodec.h"
-#include "libavformat/avformat.h"
-#include "libswscale/swscale.h"
-#include "libavutil/avutil.h"
-#include "libavutil/imgutils.h"
-}
+//extern "C" {
+//
+//#include "libavcodec/avcodec.h"
+//#include "libavformat/avformat.h"
+//#include "libswscale/swscale.h"
+//#include "libavutil/avutil.h"
+//#include "libavutil/imgutils.h"
+//}
 
 #include <string>
 #include <map>
@@ -21,12 +21,12 @@ using namespace std;
 class VideoHandler {
 private:
     JNIEnv *env;
-    AVFormatContext *pFormatCtx;
-    AVCodecContext *pCodecCtx;
-    const AVCodec *pCodec;
-    AVFrame *pFrame, *pFrameYUV;
-    AVPacket *packet;
-    SwsContext *imgConvertCtx;
+//    AVFormatContext *pFormatCtx;
+//    AVCodecContext *pCodecCtx;
+//    const AVCodec *pCodec;
+//    AVFrame *pFrame, *pFrameYUV;
+//    AVPacket *packet;
+//    SwsContext *imgConvertCtx;
     FILE *fpYUV;
 
     static void ffmpegLog(void *ptr, int level, const char *fmt, va_list vl) {
@@ -39,15 +39,15 @@ private:
     }
 
     void init() {
-        av_log_set_callback(ffmpegLog);
-        avformat_network_init();
-
-        pFormatCtx = avformat_alloc_context();
+//        av_log_set_callback(ffmpegLog);
+//        avformat_network_init();
+//
+//        pFormatCtx = avformat_alloc_context();
 
     }
 
     void unInit() {
-        avformat_network_deinit();
+//        avformat_network_deinit();
     }
 
     map<string, string> *parseParams(jobject param) {
