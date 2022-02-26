@@ -7,36 +7,8 @@ cmake_minimum_required(VERSION 3.10.2)
 SET(CMAKE_BUILD_TYPE "Debug")
 # Declares and names the project.
 
-project("handler")
 
-# Creates and names a library, sets it as either STATIC
-# or SHARED, and provides the relative paths to its source code.
-# You can define multiple libraries, and CMake builds them for you.
-# Gradle automatically packages shared libraries with your APK.
-set(LIB_SRC_DIR ../../../libs/arm64-v8a)
-include_directories(include)
-#find_library(ffmpeg ${LIB_SRC_DIR} NO_DEFAULT_PATH)
-#link_libraries(${ffmpeg})
-#add_library(libavcodec_lib SHARED IMPORTED)
-#set_target_properties(libavcodec_lib PROPERTIES IMPORTED_LOCATION ${LIB_SRC_DIR}/libavcodec.so)
-#
-#add_library(libavdevice_lib SHARED IMPORTED)
-#set_target_properties(libavdevice_lib PROPERTIES IMPORTED_LOCATION ${LIB_SRC_DIR}/libavdevice.so)
-#
-#add_library(libavfilter_lib SHARED IMPORTED)
-#set_target_properties(libavfilter_lib PROPERTIES IMPORTED_LOCATION ${LIB_SRC_DIR}/libavfilter.so)
-#
-#add_library(libavformat_lib SHARED IMPORTED)
-#set_target_properties(libavformat_lib PROPERTIES IMPORTED_LOCATION ${LIB_SRC_DIR}/libavformat.so)
-#
-#add_library(libavutil_lib SHARED IMPORTED)
-#set_target_properties(libavutil_lib PROPERTIES IMPORTED_LOCATION ${LIB_SRC_DIR}/libavutil.so)
-#
-#add_library(libswresample_lib SHARED IMPORTED)
-#set_target_properties(libswresample_lib PROPERTIES IMPORTED_LOCATION ${LIB_SRC_DIR}/libswresample.so)
-#
-#add_library(libswscale_lib SHARED IMPORTED)
-#set_target_properties(libswscale_lib PROPERTIES IMPORTED_LOCATION ${LIB_SRC_DIR}/libswscale.so)
+project("handler")
 
 add_library( # Sets the name of the library.
         handler
@@ -46,8 +18,32 @@ add_library( # Sets the name of the library.
 
         # Provides a relative path to your source file(s).
         image/image_handler.cpp
+        image/image_handler.h
         video/video_handler.cpp
-        video/video_dealer.cpp)
+        video/video_dealer.cpp
+        video/video_dealer.h
+        video/video_handler.h)
+
+set(distribution_DIR ./lib)
+
+include_directories(./include)
+add_library( avcodec SHARED IMPORTED)
+set_target_properties( avcodec PROPERTIES IMPORTED_LOCATION ${distribution_DIR}/libavcodec.so)
+
+add_library( avdevice SHARED IMPORTED)
+set_target_properties( avdevice PROPERTIES IMPORTED_LOCATION ${distribution_DIR}/libavdevice.so)
+
+add_library( avfilter SHARED IMPORTED)
+set_target_properties( avfilter PROPERTIES IMPORTED_LOCATION ${distribution_DIR}/libavfilter.so)
+
+add_library( avformat SHARED IMPORTED)
+set_target_properties( avformat PROPERTIES IMPORTED_LOCATION ${distribution_DIR}/libavformat.so)
+
+add_library( avutil SHARED IMPORTED)
+set_target_properties( avutil PROPERTIES IMPORTED_LOCATION ${distribution_DIR}/libavutil.so)
+
+add_library( swscale SHARED IMPORTED)
+set_target_properties( swscale PROPERTIES IMPORTED_LOCATION ${distribution_DIR}/libswscale.so)
 
 find_library(
         log-lib
@@ -61,13 +57,12 @@ find_library(
 target_link_libraries( # Specifies the target library.
         handler
         jnigraphics
-#        ${libavcodec_lib}
-#        ${libavdevice_lib}
-#        ${libavfilter_lib}
-#        ${libavformat_lib}
-#        ${libavutil_lib}
-#        ${libswresample_lib}
-#        ${libswscale_lib}
+        ${avcodec}
+        ${avdevice}
+        ${avfilter}
+        ${avformat}
+        ${avutil}
+        ${swscale}
         # Links the target library to the log library
         # included in the NDK.
         ${log-lib})

@@ -1,8 +1,12 @@
 package com.ggg.enter.activity
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
 import com.ggg.enter.model.EnterRepository
 import com.ggg.mediafactory.ui.theme.MediaFactoryTheme
 
@@ -26,6 +31,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Content()
         }
+        requestPermission()
     }
 
     @Composable
@@ -59,4 +65,23 @@ class MainActivity : ComponentActivity() {
     private fun DefaultPreview() {
         Content()
     }
+
+    private fun requestPermission() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) !=
+            PackageManager.PERMISSION_GRANTED ||
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+            PackageManager.PERMISSION_GRANTED
+        ) {
+            val launcher: ActivityResultLauncher<Array<String>> =
+                registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { }
+
+            launcher.launch(
+                arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+            )
+        }
+    }
+
 }

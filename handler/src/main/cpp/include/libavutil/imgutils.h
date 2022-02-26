@@ -145,7 +145,7 @@ void av_image_copy(uint8_t *dst_data[4], int dst_linesizes[4],
  *
  * @note The linesize parameters have the type ptrdiff_t here, while they are
  *       int for av_image_copy().
- * @note On x86_64, the linesizes currently need to be aligned to the cacheline
+ * @note On x86, the linesizes currently need to be aligned to the cacheline
  *       size (i.e. 64) to get improved performance.
  */
 void av_image_copy_uc_from(uint8_t *dst_data[4],       const ptrdiff_t dst_linesizes[4],
