@@ -23,8 +23,9 @@ add_library( # Sets the name of the library.
         video/video_dealer.cpp
         video/video_dealer.h
         video/video_handler.h)
-
-set(distribution_DIR ./lib)
+message(${CMAKE_CURRENT_SOURCE_DIR})
+# CMAKE_CURRENT_SOURCE_DIR code source的目录，cpp
+set(distribution_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/${CMAKE_ANDROID_ARCH_ABI})
 
 include_directories(./include)
 add_library( avcodec SHARED IMPORTED)
@@ -45,6 +46,9 @@ set_target_properties( avutil PROPERTIES IMPORTED_LOCATION ${distribution_DIR}/l
 add_library( swscale SHARED IMPORTED)
 set_target_properties( swscale PROPERTIES IMPORTED_LOCATION ${distribution_DIR}/libswscale.so)
 
+add_library( swresample SHARED IMPORTED)
+set_target_properties( swresample PROPERTIES IMPORTED_LOCATION ${distribution_DIR}/libswresample.so)
+
 find_library(
         log-lib
         log)
@@ -56,13 +60,12 @@ find_library(
 
 target_link_libraries( # Specifies the target library.
         handler
+        avcodec
+        avdevice
+        avfilter
+        avformat
+        avutil
+        swscale
+        swresample
         jnigraphics
-        ${avcodec}
-        ${avdevice}
-        ${avfilter}
-        ${avformat}
-        ${avutil}
-        ${swscale}
-        # Links the target library to the log library
-        # included in the NDK.
         ${log-lib})

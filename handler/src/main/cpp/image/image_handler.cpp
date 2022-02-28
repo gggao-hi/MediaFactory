@@ -15,12 +15,15 @@ Java_com_ggg_handler_MediaHandler_negative(JNIEnv *env, jobject thiz, jobject bi
         LOGE("AndroidBitmap_getInfo error: %d", infoRet);
         return FAILED;
     }
+    LOGI("AndroidBitmap_getInfo success");
     void *bitmapPixels;
     int pixRet = AndroidBitmap_lockPixels(env, bitmap, &bitmapPixels);
     if (pixRet != ANDROID_BITMAP_RESULT_SUCCESS) {
         LOGE("AndroidBitmap_lockPixels error: %d", pixRet);
         return FAILED;
     }
+    LOGI("AndroidBitmap_lockPixels success");
+
     int w = bitmapInfo.width;
     int h = bitmapInfo.height;
     auto *srcPix = (uint32_t *) bitmapPixels;
@@ -44,6 +47,7 @@ Java_com_ggg_handler_MediaHandler_negative(JNIEnv *env, jobject thiz, jobject bi
         }
     }
     AndroidBitmap_unlockPixels(env, bitmap);
+    LOGI("AndroidBitmap_unlockPixels success");
 
     return SUCCESS;
 }
