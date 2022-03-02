@@ -6,7 +6,7 @@
 cmake_minimum_required(VERSION 3.10.2)
 SET(CMAKE_BUILD_TYPE "Debug")
 # Declares and names the project.
-
+add_compile_options(-g)
 
 project("handler")
 
@@ -23,11 +23,12 @@ add_library( # Sets the name of the library.
         video/video_dealer.cpp
         video/video_dealer.h
         video/video_handler.h)
-message(${CMAKE_CURRENT_SOURCE_DIR})
+message("${CMAKE_CURRENT_SOURCE_DIR}")
+message("${CMAKE_ANDROID_ARCH_ABI}")
 # CMAKE_CURRENT_SOURCE_DIR code source的目录，cpp
-set(distribution_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/${CMAKE_ANDROID_ARCH_ABI})
+set(distribution_DIR ${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_ANDROID_ARCH_ABI}/lib)
 
-include_directories(./include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_ANDROID_ARCH_ABI}/include)
 add_library( avcodec SHARED IMPORTED)
 set_target_properties( avcodec PROPERTIES IMPORTED_LOCATION ${distribution_DIR}/libavcodec.so)
 
