@@ -18,21 +18,28 @@ int VideoHandler::decode(jobject params) {
     map<string, string> *param = parseParams(params);
     string videoPath = param->find("videoPath")->second;
     string outPath = param->find("outPath")->second;
+    LOGD("avformat_open_input");
     if (avformat_open_input(&pFormatCtx, videoPath.c_str(), nullptr, nullptr) != 0) {
         LOGE("couldn't open: %s \n", videoPath.c_str());
         return -1;
     }
+    LOGD("avcodec_alloc_context3");
     pCodecCtx = avcodec_alloc_context3(nullptr);
     if (pCodecCtx == nullptr) {
         LOGE("couldn't alloc codec context\n");
         return -1;
     }
+    LOGD("avcodec_parameters_to_context");
     avcodec_parameters_to_context(pCodecCtx, pFormatCtx->streams[videoIndex]->codecpar);
+    LOGD("avcodec_find_decoder");
+
     pCodec = avcodec_find_decoder(pCodecCtx->codec_id);
     if (pCodec == nullptr) {
         LOGE("couldn't find codec \n");
         return -1;
     }
+    LOGD("avcodec_open2");
+
     if (avcodec_open2(pCodecCtx, pCodec, nullptr) < 0) {
         LOGE("couldn't open codec \n");
         return -1;
