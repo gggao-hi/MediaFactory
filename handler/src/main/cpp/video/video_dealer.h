@@ -43,6 +43,8 @@ private:
         avformat_network_init();
 
         pFormatCtx = avformat_alloc_context();
+        AVStream *avStream = avformat_new_stream(pFormatCtx, pCodec);
+        pFormatCtx->streams = &avStream;
 
     }
 

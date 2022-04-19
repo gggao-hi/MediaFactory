@@ -20,6 +20,10 @@ class MainApplication : Application(), Application.ActivityLifecycleCallbacks {
         Thread.setDefaultUncaughtExceptionHandler { t, e ->
             Log.e("ExceptionHandler", "thread:${t.id}")
             e.printStackTrace()
+            activities.forEach {
+                it.finish()
+            }
+            android.os.Process.killProcess(android.os.Process.myPid())
         }
     }
 

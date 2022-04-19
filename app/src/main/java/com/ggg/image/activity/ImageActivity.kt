@@ -6,9 +6,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -47,7 +50,7 @@ class ImageActivity : ComponentActivity() {
             var title: String by remember {
                 mutableStateOf(getString(R.string.film))
             }
-            Column {
+            Column(modifier = Modifier.verticalScroll(ScrollState(0))) {
                 val image: Flow<Bitmap> by remember {
                     mutableStateOf(loadImage())
                 }
@@ -59,7 +62,7 @@ class ImageActivity : ComponentActivity() {
                 )
                 Image(
                     painter = BitmapPainter(
-                        source.asImageBitmap()
+                        source.asImageBitmap(),
                     ), contentDescription = ""
                 )
                 Spacer(modifier = Modifier.height(20.dp))

@@ -1,6 +1,7 @@
 //
 // Created by Administrator on 2022/1/8.
 //
+//使用 toolchains\aarch64-linux-android-4.9\prebuilt\windows-x86_64\bin\aarch64-linux-android-addr2line 定位报错位置
 #include <map>
 
 #include "video_dealer.h"
@@ -27,6 +28,23 @@ int VideoHandler::decode(jobject params) {
     pCodecCtx = avcodec_alloc_context3(nullptr);
     if (pCodecCtx == nullptr) {
         LOGE("couldn't alloc codec context\n");
+        return -1;
+    }
+    if (pFormatCtx == nullptr) {
+        LOGE("pFormatCtx is null");
+        return -1;
+    }
+    if (pFormatCtx->streams == nullptr) {
+        LOGE("pFormatCtx->streams is null");
+        return -1;
+    }
+
+    if (pFormatCtx->streams[videoIndex] == nullptr) {
+        LOGE("pFormatCtx->streams[videoIndex] is null");
+        return -1;
+    }
+    if (pFormatCtx->streams[videoIndex]->codecpar == nullptr) {
+        LOGE("pFormatCtx->streams[videoIndex]->codecpar is null");
         return -1;
     }
     LOGD("avcodec_parameters_to_context");
