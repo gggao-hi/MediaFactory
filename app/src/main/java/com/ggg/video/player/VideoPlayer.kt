@@ -16,7 +16,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.viewinterop.AndroidView
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 
 /**
@@ -25,12 +27,7 @@ import kotlinx.coroutines.flow.Flow
 class VideoPlayer(private val context: Context) {
     private var surfaceHolder: SurfaceHolder? = null
     var currentVideoPath: String? = null
-    private val mediaPlayer = MediaPlayer().apply {
-        val attributes = AudioAttributes.Builder()
-            .setLegacyStreamType(AudioManager.STREAM_MUSIC)
-            .build()
-        setAudioAttributes(attributes)
-    }
+    private val mediaPlayer = MediaPlayer()
 
     fun resetVideoPath(path: String) {
         mediaPlayer.reset()
@@ -95,10 +92,16 @@ class VideoPlayer(private val context: Context) {
         if (videoPath.isNotEmpty()) {
             currentVideoPath = videoPath
             mediaPlayer.setDataSource(context, Uri.parse(videoPath))
-            mediaPlayer.prepare()
+            val attributes = AudioAttributes.Builder()
+                .setLegacyStreamType(AudioManager.STREAM_MUSIC)
+                .build()
+            mediaPlayer.setAudioAttributes(attributes)
+
             mediaPlayer.setOnPreparedListener {
                 mediaPlayer.start()
             }
+            mediaPlayer.prepare()
+
         }
 
     }

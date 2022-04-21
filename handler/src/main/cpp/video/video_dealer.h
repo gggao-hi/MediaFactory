@@ -41,11 +41,7 @@ private:
     void init() {
         av_log_set_callback(ffmpegLog);
         avformat_network_init();
-
         pFormatCtx = avformat_alloc_context();
-        AVStream *avStream = avformat_new_stream(pFormatCtx, pCodec);
-        pFormatCtx->streams = &avStream;
-
     }
 
     void unInit() {

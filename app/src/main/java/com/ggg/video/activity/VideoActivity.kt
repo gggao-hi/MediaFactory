@@ -2,6 +2,7 @@ package com.ggg.video.activity
 
 import android.os.Bundle
 import android.os.Environment
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ScrollState
@@ -28,7 +29,7 @@ class VideoActivity : ComponentActivity() {
     private val viewModel = VideoSourceViewModel()
     private val player = VideoPlayer(this)
     private val outPath: String by lazy {
-        "${getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath}${File.separator}out.mp4"
+        "${getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath}"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +58,8 @@ class VideoActivity : ComponentActivity() {
                             )
                         ) == 0
                     ) {
-                        player.resetVideoPath(outPath)
+                        Toast.makeText(this@VideoActivity, "decode success", Toast.LENGTH_LONG)
+                            .show()
                     }
                 }) {
                     Text(text = "decoder")

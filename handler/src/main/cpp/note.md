@@ -5,7 +5,7 @@
       2. add2line工具需要根据当前系统和 so文件支持的系统而定.
    
  -  add2line 命令
-    1. `path/add2line -e so_path/xx.so 0000000000013174 0000000000012aa4 `
+    1. `path/add2line -e so_path/xx1.so so_path/xx2.so so_path/xx3.so 0000000000013174 0000000000012aa4 `
     2. 后面2个是 报错信息中的地址,  地址来源于crash 日志中 backtrace下的内容,只需要自己so文件中的地址
  ```
      2022-04-19 15:35:13.574 27548-27548/? A/DEBUG: backtrace:
