@@ -12,17 +12,17 @@ Java_com_ggg_handler_MediaHandler_negative(JNIEnv *env, jobject thiz, jobject bi
     AndroidBitmapInfo bitmapInfo;
     int infoRet = AndroidBitmap_getInfo(env, bitmap, &bitmapInfo);
     if (infoRet != ANDROID_BITMAP_RESULT_SUCCESS) {
-        LOGE("AndroidBitmap_getInfo error: %d", infoRet);
+        LOGE("negative:","AndroidBitmap_getInfo error: %d", infoRet);
         return FAILED;
     }
-    LOGI("AndroidBitmap_getInfo success");
+    LOGI("negative:","AndroidBitmap_getInfo success");
     void *bitmapPixels;
     int pixRet = AndroidBitmap_lockPixels(env, bitmap, &bitmapPixels);
     if (pixRet != ANDROID_BITMAP_RESULT_SUCCESS) {
-        LOGE("AndroidBitmap_lockPixels error: %d", pixRet);
+        LOGE("negative:","AndroidBitmap_lockPixels error: %d", pixRet);
         return FAILED;
     }
-    LOGI("AndroidBitmap_lockPixels success");
+    LOGI("negative:","AndroidBitmap_lockPixels success");
 
     int w = bitmapInfo.width;
     int h = bitmapInfo.height;
@@ -47,7 +47,8 @@ Java_com_ggg_handler_MediaHandler_negative(JNIEnv *env, jobject thiz, jobject bi
         }
     }
     AndroidBitmap_unlockPixels(env, bitmap);
-    LOGI("AndroidBitmap_unlockPixels success");
+
+    LOGI("negative:","AndroidBitmap_unlockPixels success");
 
     return SUCCESS;
 }
@@ -78,14 +79,15 @@ Java_com_ggg_handler_MediaHandler_flip(JNIEnv *env, jobject thiz, jobject bitmap
     AndroidBitmapInfo bitmapInfo;
     int infoState = AndroidBitmap_getInfo(env, bitmap, &bitmapInfo);
     if (infoState != ANDROID_BITMAP_RESULT_SUCCESS) {
-        LOGE("AndroidBitmap_getInfo error:%d", infoState);
+
+        LOGE("negative:","AndroidBitmap_getInfo error:%d", infoState);
         return FAILED;
     }
 
     void *pixels;
     int lockState = AndroidBitmap_lockPixels(env, bitmap, &pixels);
     if (lockState != ANDROID_BITMAP_RESULT_SUCCESS) {
-        LOGE("AndroidBitmap_lockPixels error:%d", lockState);
+        LOGE("negative:","AndroidBitmap_lockPixels error:%d", lockState);
         return FAILED;
     }
     int w = bitmapInfo.width;

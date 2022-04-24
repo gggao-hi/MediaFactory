@@ -14,7 +14,7 @@ JNIEXPORT jint JNICALL videoCommandHandler(JNIEnv *env, jobject clazz, jobject c
     jint type = env->GetIntField(command,
                                  env->GetFieldID(commandClazz, "type", "I"));
     auto *pHandler = new VideoHandler(env);
-    LOGD("command:%d", type);
+    LOGD("videoCommandHandler", "command:%d", type);
     switch (type) {
         case TYPE_SPLIT_SOUND:
             return pHandler->splitVideo(paths);

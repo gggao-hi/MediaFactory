@@ -4,11 +4,13 @@
 #include <android/log.h>
 #include <jni.h>
 #include <string>
+#include <stdio.h>
 
+using namespace std;
 #ifndef MEDIAFACTORY_LOG_H
 #define MEDIAFACTORY_LOG_H
-#define TAG "handler"
-#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG,TAG,__VA_ARGS__)
-#define LOGI(...) __android_log_print(ANDROID_LOG_INFO,TAG,__VA_ARGS__)
-#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR,TAG,__VA_ARGS__)
+
+#define LOGD(tag, ...) __android_log_print(ANDROID_LOG_DEBUG,tag,__VA_ARGS__)
+#define LOGI(tag, ...) __android_log_print(ANDROID_LOG_INFO,tag,__VA_ARGS__)
+#define LOGE(tag, ...) __android_log_print(ANDROID_LOG_ERROR,tag,__VA_ARGS__)
 #endif //MEDIAFACTORY_LOG_H
