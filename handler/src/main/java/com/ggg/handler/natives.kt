@@ -23,7 +23,7 @@ object MediaHandler {
         }
     }
 
-    external fun sendVideoCommand(command: VideoCommand): Int
+    external fun sendVideoCommand(command: VideoCommand, resultListener: OnHandlerResultListener)
 
     sealed class VideoCommand(val type: Int, val paths: Map<String, String>)
 
@@ -36,5 +36,9 @@ object MediaHandler {
             outPath?.let { put("outPath", it) }
 
         })
+
+    interface OnHandlerResultListener {
+        fun onResult(code: Int)
+    }
 }
 
