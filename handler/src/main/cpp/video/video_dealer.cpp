@@ -7,29 +7,27 @@
 
 using namespace std;
 
-int VideoHandler::decode(jobject params) {
-    LOGD("decode:","decode");
+int VideoHandler::decode(jobject params, jobject surface) {
+    LOGD("decode:", "decode");
     int videoIndex = -1;
-    int y_size = 0;
-    int ret, got_picture;
-    int frame_cnt = 0;
+    int ret;
     clock_t time_start, time_end;
     double time_duration = 0.0;
     map<string, string> *param = parseParams(params);
     string videoPath = param->find("videoPath")->second;
-    string outPath = param->find("outPath")->second;
-    LOGD("decode:","input :%s\n", videoPath.c_str());
-    LOGD("decode:","avformat_open_input");
+
+    LOGD("decode:", "input :%s\n", videoPath.c_str());
+    LOGD("decode:", "avformat_open_input");
     if (avformat_open_input(&pFormatCtx, videoPath.c_str(), nullptr, nullptr) != 0) {
-        LOGE("decode:","couldn't open: %s \n", videoPath.c_str());
+        LOGE("decode:", "couldn't open: %s \n", videoPath.c_str());
         return -1;
     }
     if (pFormatCtx == nullptr) {
-        LOGE("decode:","pFormatCtx is null");
+        LOGE("decode:", "pFormatCtx is null");
         return -1;
     }
     if (pFormatCtx->streams == nullptr) {
-        LOGE("decode:","pFormatCtx->streams is null");
+        LOGE("decode:", "pFormatCtx->streams is null");
         return -1;
     }
     avformat_find_stream_info(pFormatCtx, nullptr);
@@ -39,114 +37,114 @@ int VideoHandler::decode(jobject params) {
             break;
         }
     }
-    LOGD("decode:","avcodec_alloc_context3");
-    pCodecCtx = avcodec_alloc_context3(nullptr);
-    if (pCodecCtx == nullptr) {
-        LOGE("decode:","couldn't alloc codec context\n");
-        return -1;
-    }
-
     if (pFormatCtx->streams[videoIndex]->codecpar == nullptr) {
-        LOGE("decode:","pFormatCtx->streams[videoIndex]->codecpar is null");
+        LOGE("decode:", "pFormatCtx->streams[videoIndex]->codecpar is null");
         return -1;
     }
-    LOGD("decode:","avcodec_parameters_to_context\n");
-    LOGD("decode:","avcodec_parameters_to_context codec format:%d\n",
-         pFormatCtx->streams[videoIndex]->codecpar->format);
-    LOGD("decode:","avcodec_parameters_to_context codec frame_size:%d\n",
-         pFormatCtx->streams[videoIndex]->codecpar->frame_size);
-    avcodec_parameters_to_context(pCodecCtx, pFormatCtx->streams[videoIndex]->codecpar);
-    LOGD("decode:","avcodec_find_decoder");
-
-    pCodec = avcodec_find_decoder(pCodecCtx->codec_id);
+    LOGD("decode:", "avcodec_find_decoder");
+    pCodec = avcodec_find_decoder(pFormatCtx->streams[videoIndex]->codecpar->codec_id);
     if (pCodec == nullptr) {
-        LOGE("decode:","couldn't find codec \n");
+        LOGE("decode:", "couldn't find codec \n");
         return -1;
     }
-    LOGD("decode:","avcodec_open2");
+    LOGD("decode:", "avcodec_alloc_context3");
+    pCodecCtx = avcodec_alloc_context3(pCodec);
+    if (pCodecCtx == nullptr) {
+        LOGE("decode:", "couldn't alloc codec context\n");
+        return -1;
+    }
+
+
+    int result = avcodec_parameters_to_context(pCodecCtx,
+                                               pFormatCtx->streams[videoIndex]->codecpar);
+    if (result != 0) {
+        LOGE("decode:", "avcodec_find_decoder failed, code:%d", result);
+
+    }
+    LOGD("decode:", "avcodec_open2");
 
     if (avcodec_open2(pCodecCtx, pCodec, nullptr) < 0) {
-        LOGE("decode:","couldn't open codec \n");
+        LOGE("decode:", "couldn't open codec \n");
         return -1;
     }
-    LOGD("decode:","avcodec_open2 finish");
+    LOGD("decode:", "avcodec_open2 finish");
     pFrame = av_frame_alloc();
-    pFrameYUV = av_frame_alloc();
-
-    unsigned char *outBuffer = (unsigned char *) av_malloc(
-            av_image_get_buffer_size(AV_PIX_FMT_YUV420P, pCodecCtx->width, pCodecCtx->height, 1));
-    av_image_fill_arrays(pFrameYUV->data, pFrameYUV->linesize, outBuffer, AV_PIX_FMT_YUV420P,
-                         pCodecCtx->width, pCodecCtx->height, 1);
+    pFrameRGBA = av_frame_alloc();
 
     packet = (AVPacket *) av_malloc(sizeof(AVPacket));
-    LOGD("decode:","av_malloc AVPacket finish");
-    LOGD("decode:","pCodecCtx->pix_fmt:");
-
-    imgConvertCtx = sws_getContext(pCodecCtx->width, pCodecCtx->height, pCodecCtx->pix_fmt,
-                                   pCodecCtx->width, pCodecCtx->height, AV_PIX_FMT_YUV420P,
-                                   SWS_BICUBIC,
-                                   nullptr, nullptr, nullptr);
+    LOGD("decode:", "av_malloc AVPacket finish");
 
     time_start = clock();
-    fpYUV = fopen((outPath + "/out.yuv").c_str(), "wb+");
-    LOGD("decode:","fopen finish");
-    if (fpYUV == nullptr) {
-        LOGE("decode:","couldn't open out path \n");
-        return -1;
-    }
+    pANWindow = ANativeWindow_fromSurface(env, surface);
+    ANativeWindow_setBuffersGeometry(pANWindow, pCodecCtx->width, pCodecCtx->height,
+                                     WINDOW_FORMAT_RGBA_8888);
+    ANativeWindow_Buffer buffer;
+    int window_width = ANativeWindow_getWidth(pANWindow);
+    int window_height = ANativeWindow_getHeight(pANWindow);
+    LOGD("decode:", "width:%d;height:%d,window with:%d,window height:%d",
+         pCodecCtx->width, pCodecCtx->height, window_width, window_height);
+    imgConvertCtx = sws_getContext(pCodecCtx->width, pCodecCtx->height, pCodecCtx->pix_fmt,
+                                   window_width, window_height, AV_PIX_FMT_RGBA,
+                                   SWS_POINT,nullptr, nullptr, nullptr);
+
     while (av_read_frame(pFormatCtx, packet) >= 0) {
         if (packet->stream_index != videoIndex) { continue; }
         ret = avcodec_send_packet(pCodecCtx, packet);
         if (ret < 0) {
-            LOGE("decode:","decoder error %d \n", ret);
+            LOGE("decode:", "decoder error %d \n", ret);
             return -1;
         }
-        got_picture = avcodec_receive_frame(pCodecCtx, pFrame);
-        if (got_picture == 0) {
+        while (avcodec_receive_frame(pCodecCtx, pFrame) == 0) {
+            auto *outBuffer = (unsigned char *) av_malloc(
+                    av_image_get_buffer_size(AV_PIX_FMT_RGBA, pCodecCtx->width, pCodecCtx->height,
+                                             1));
+            av_image_fill_arrays(pFrameRGBA->data, pFrameRGBA->linesize, outBuffer, AV_PIX_FMT_RGBA,
+                                 pCodecCtx->width, pCodecCtx->height, 1);
+
             sws_scale(imgConvertCtx, pFrame->data, pFrame->linesize, 0, pCodecCtx->height,
-                      pFrameYUV->data, pFrameYUV->linesize);
-            y_size = pCodecCtx->width * pCodecCtx->height;
-            fwrite(pFrameYUV->data[0], 1, y_size, fpYUV);
-            fwrite(pFrameYUV->data[1], 1, y_size / 4, fpYUV);
-            fwrite(pFrameYUV->data[2], 1, y_size / 4, fpYUV);
-            frame_cnt++;
-            fflush(fpYUV);
+                      pFrameRGBA->data, pFrameRGBA->linesize);
+
+            ANativeWindow_lock(pANWindow, &buffer, nullptr);
+            auto *destBuffer = reinterpret_cast<uint8_t *>(buffer.bits);
+            int srcLine = pFrame->linesize[0];
+            int dstLine = buffer.stride * 4;
+            for (int i = 0; i < pCodecCtx->height; i++) {
+                memcpy(destBuffer + i * dstLine, outBuffer + i * srcLine, srcLine);
+            }
+            ANativeWindow_unlockAndPost(pANWindow);
         }
 
     }
 
-    fclose(fpYUV);
-
     time_end = clock();
-
     time_duration = time_end - time_start;
-    LOGD("decode:","decode duration: %f \n", time_duration / (1000 * 1000));
+    LOGD("decode:", "decode duration: %f \n", time_duration / (1000 * 1000));
 
     av_free(packet);
     sws_freeContext(imgConvertCtx);
     av_frame_free(&pFrame);
-    av_frame_free(&pFrameYUV);
+    av_frame_free(&pFrameRGBA);
     avcodec_close(pCodecCtx);
+    ANativeWindow_release(pANWindow);
     avformat_close_input(&pFormatCtx);
-    LOGD("decode:","output :%s\n", outPath.c_str());
 
     return 0;
 
 }
 
 int VideoHandler::splitVideo(jobject params) {
-    LOGD("VideoHandler:","splitVideo");
+    LOGD("VideoHandler:", "splitVideo");
 
     return 0;
 }
 
 int VideoHandler::jointVideo(jobject params) {
-    LOGD("VideoHandler:","jointVideo");
+    LOGD("VideoHandler:", "jointVideo");
     return 0;
 }
 
 int VideoHandler::addInk(jobject params) {
-    LOGD("VideoHandler:","addInk");
+    LOGD("VideoHandler:", "addInk");
     return 0;
 }
 

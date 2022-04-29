@@ -14,6 +14,8 @@ extern "C" {
 #include <map>
 #include <stdio.h>
 #include <time.h>
+#include <android/native_window.h>
+#include <android/native_window_jni.h>
 #include "../commons/log.h"
 
 using namespace std;
@@ -24,10 +26,10 @@ private:
     AVFormatContext *pFormatCtx;
     AVCodecContext *pCodecCtx;
     const AVCodec *pCodec;
-    AVFrame *pFrame, *pFrameYUV;
+    AVFrame *pFrame, *pFrameRGBA;
     AVPacket *packet;
     SwsContext *imgConvertCtx;
-    FILE *fpYUV;
+    ANativeWindow *pANWindow;
 
     static void ffmpegLog(void *ptr, int level, const char *fmt, va_list vl) {
         FILE *fp = fopen("/storage/emulated/0/av_log.txt", "a+");
@@ -84,7 +86,7 @@ public:
         unInit();
     }
 
-    int decode(jobject params);
+    int decode(jobject params, jobject surface);
 
     int splitVideo(jobject params);
 
