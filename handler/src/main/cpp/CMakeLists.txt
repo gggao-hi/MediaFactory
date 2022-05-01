@@ -69,4 +69,5 @@ target_link_libraries( # Specifies the target library.
         swscale
         swresample
         jnigraphics
-        ${log-lib})
+        ${log-lib}
+        android)

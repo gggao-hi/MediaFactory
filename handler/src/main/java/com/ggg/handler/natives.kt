@@ -1,6 +1,7 @@
 package com.ggg.handler
 
 import android.graphics.Bitmap
+import android.view.Surface
 import androidx.annotation.IntDef
 
 object MediaHandler {
@@ -23,18 +24,34 @@ object MediaHandler {
         }
     }
 
-    external fun sendVideoCommand(command: VideoCommand, resultListener: OnHandlerResultListener)
+    fun exeCommand(
+        command: VideoCommand,
+        surfaceView: Surface?,
+        listener: Function1<Int, Unit>
+    ) {
+        val resultListener = object : OnHandlerResultListener {
+            override fun onResult(code: Int) {
+                listener.invoke(code)
+            }
+
+        }
+        sendVideoCommand(command, surfaceView, resultListener)
+    }
+
+    private external fun sendVideoCommand(
+        command: VideoCommand,
+        surfaceView: Surface?,
+        resultListener: OnHandlerResultListener
+    )
 
     sealed class VideoCommand(val type: Int, val paths: Map<String, String>)
 
     data class SplitVideoCommand(val path: String) :
         VideoCommand(101, mutableMapOf<String, String>().apply { put("videoPath", path) })
 
-    data class DecodeCommand(val videoPath: String?, val outPath: String?) :
+    data class DecodeCommand(val videoPath: String?) :
         VideoCommand(103, mutableMapOf<String, String>().apply {
             videoPath?.let { put("videoPath", it) }
-            outPath?.let { put("outPath", it) }
-
         })
 
     interface OnHandlerResultListener {

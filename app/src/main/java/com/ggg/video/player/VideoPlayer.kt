@@ -29,11 +29,6 @@ class VideoPlayer(private val context: Context) {
     var currentVideoPath: String? = null
     private val mediaPlayer = MediaPlayer()
 
-    fun resetVideoPath(path: String) {
-        mediaPlayer.reset()
-        play(path)
-    }
-
     @Composable
     fun InitPlayer(height: Dp, videoPath: Flow<String>) {
         val path: String by videoPath.collectAsState(initial = "").apply {
@@ -88,6 +83,7 @@ class VideoPlayer(private val context: Context) {
     }
 
     private fun play(videoPath: String) {
+        mediaPlayer.reset()
         mediaPlayer.setDisplay(surfaceHolder)
         if (videoPath.isNotEmpty()) {
             currentVideoPath = videoPath

@@ -10,6 +10,7 @@ jobject gl_command;
 jclass gl_command_clazz;
 jclass gl_resultListener_clazz;
 jobject gl_result_listener;
+jobject gl_surface;
 JavaVM *current_jvm;
 
 bool getEnv(JNIEnv **env) {
@@ -36,9 +37,13 @@ void releaseEnv() {
         env->DeleteGlobalRef(gl_command_clazz);
         env->DeleteGlobalRef(gl_resultListener_clazz);
         env->DeleteGlobalRef(gl_result_listener);
+        if (gl_surface != nullptr) {
+            env->DeleteGlobalRef(gl_surface);
+        }
         current_jvm->DetachCurrentThread();
     }
 }
+
 /**
  * 在子线程中env->FindClass 总是返回null,
  * 原因是 AttachCurrentThread 只会加载 java 系统中的class 不会加载自定义的class
@@ -67,7 +72,7 @@ void run() {
                 result_code = pHandler->addInk(paths);
                 break;
             case TYPE_DECODER:
-                result_code = pHandler->decode(paths);
+                result_code = pHandler->decode(paths, gl_surface);
                 break;
             default:
                 break;
@@ -81,13 +86,16 @@ void run() {
     releaseEnv();
 }
 
-JNIEXPORT void JNICALL videoCommandHandler(JNIEnv *env, jobject clazz, jobject command,
-                                           jobject result_listener) {
+JNIEXPORT void JNICALL
+videoCommandHandler(JNIEnv *env, jobject clazz, jobject command, jobject surface,
+                    jobject result_listener) {
 
     jclass commandClazz = env->FindClass("com/ggg/handler/MediaHandler$VideoCommand");
     jclass resultListenerClazz = env->FindClass(
             "com/ggg/handler/MediaHandler$OnHandlerResultListener");
-
+    if (surface != nullptr) {
+        gl_surface = env->NewGlobalRef(surface);
+    }
     gl_command = env->NewGlobalRef(command);
     gl_result_listener = env->NewGlobalRef(result_listener);
     gl_command_clazz = static_cast<jclass>(env->NewGlobalRef(commandClazz));
@@ -105,7 +113,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *jvm, void *reserved) {
     jclass clazz = env->FindClass("com/ggg/handler/MediaHandler");
 
     JNINativeMethod methods[] = {{"sendVideoCommand",
-                                         "(Lcom/ggg/handler/MediaHandler$VideoCommand;Lcom/ggg/handler/MediaHandler$OnHandlerResultListener;)V",
+                                         "(Lcom/ggg/handler/MediaHandler$VideoCommand;Landroid/view/Surface;Lcom/ggg/handler/MediaHandler$OnHandlerResultListener;)V",
                                          (void *) videoCommandHandler}};
 
     if (env->RegisterNatives(clazz, methods, sizeof(methods) / sizeof(methods[0]))) {
