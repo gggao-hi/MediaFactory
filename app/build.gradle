@@ -18,5 +18,4 @@ android {
 }
 dependencies {
     implementation project(':handler')
-    implementation project(':vsr')
 }
