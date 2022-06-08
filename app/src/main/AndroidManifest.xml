@@ -14,12 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MediaFactory">
         <activity
-            android:name="com.ggg.image.activity.ImageActivity"
+            android:name="com.ggg.handler.image.activity.ImageActivity"
             android:exported="false"
             android:label="@string/title_activity_image_color"
             android:theme="@style/Theme.MediaFactory.NoActionBar" />
         <activity
-            android:name="com.ggg.video.activity.VideoActivity"
+            android:name="com.ggg.handler.video.activity.VideoActivity"
             android:exported="false"
             android:label="@string/title_activity_image_color"
             android:theme="@style/Theme.MediaFactory.NoActionBar" />

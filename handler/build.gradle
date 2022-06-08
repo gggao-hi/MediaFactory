@@ -2,8 +2,7 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
 }
-apply from: '../dependence.gradle'
-
+apply from: '../config.gradle'
 
 android {
     defaultConfig {
@@ -24,4 +23,7 @@ android {
         }
     }
 
+}
+dependencies {
+    api project(":base")
 }

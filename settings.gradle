@@ -9,3 +9,4 @@ rootProject.name = "MediaFactory"
 include ':app'
 include ':handler'
 
+include ':base'
