@@ -10,3 +10,4 @@ include ':app'
 include ':handler'
 
 include ':base'
+include ':share_remote'

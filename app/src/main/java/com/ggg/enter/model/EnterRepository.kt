@@ -5,6 +5,7 @@ import com.ggg.base.BaseApplication
 import com.ggg.handler.image.activity.ImageActivity
 import com.ggg.mediafactory.R
 import com.ggg.handler.video.activity.VideoActivity
+import com.ggg.share_remote.ShareRemoteActivity
 
 
 /**
@@ -25,6 +26,13 @@ class EnterRepository {
                 BaseApplication.getCurrentActivity()?.apply {
                     startActivity(Intent(this, VideoActivity::class.java).apply {
                         putExtra("title", getString(R.string.video_handler))
+                    })
+                }
+            },
+            EnterBean(activity?.getString(R.string.share_remote) ?: "") {
+                BaseApplication.getCurrentActivity()?.apply {
+                    startActivity(Intent(this, ShareRemoteActivity::class.java).apply {
+                        putExtra("title", getString(R.string.share_remote))
                     })
                 }
             }

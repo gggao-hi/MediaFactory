@@ -1,0 +1,9 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+apply from: '../config.gradle'
+
+dependencies {
+    api project(":base")
+}

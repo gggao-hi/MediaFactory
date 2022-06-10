@@ -12,4 +12,5 @@ android {
 }
 dependencies {
     implementation project(':handler')
+    implementation project(':share_remote')
 }
