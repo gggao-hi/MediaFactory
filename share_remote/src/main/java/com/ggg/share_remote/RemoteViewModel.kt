@@ -1,11 +1,9 @@
 package com.ggg.share_remote
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.launch
 
 
 /**
@@ -13,16 +11,14 @@ import kotlinx.coroutines.withContext
  */
 class RemoteViewModel : ViewModel() {
     private val repository = RemoteRepository()
-
-    fun fetch(): Flow<RemoteBean> {
-        return flow {
-            withContext(viewModelScope.coroutineContext + Dispatchers.Default) {
-                repository.fetchFiles("").apply {
-                    when (this) {
-                        is ResponseResult.Failed -> RemoteBean(false)
-                        is ResponseResult.Success -> RemoteBean(true, this.files)
-                    }
-
+    val remoteBeanLiveData: MutableLiveData<RemoteBean> = MutableLiveData()
+    fun fetch(id: String) {
+        viewModelScope.launch {
+            repository.fetchFiles("").apply {
+                when (this) {
+                    is ResponseResult.Failed -> remoteBeanLiveData.value = (RemoteBean(false))
+                    is ResponseResult.Success -> remoteBeanLiveData.value =
+                        (RemoteBean(true, this.files))
                 }
 
             }

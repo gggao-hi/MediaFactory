@@ -1,76 +1,43 @@
 package com.ggg.share_remote
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.coroutines.flow.Flow
+import androidx.recyclerview.widget.GridLayoutManager
+import com.ggg.share_remote.databinding.LayoutShareRemoteBinding
 
-class ShareRemoteActivity : ComponentActivity() {
-    private var remoteViewModel: RemoteViewModel? = null
+class ShareRemoteActivity : AppCompatActivity() {
+    private val fileItems: MutableList<FileItem> = mutableListOf()
+    private val fileItemAdapter by lazy {
+        FolderItemAdapter(fileItems)
+    }
+    private var viewModel: RemoteViewModel? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        remoteViewModel = ViewModelProvider(this).get(RemoteViewModel::class.java)
-        setContent {
-            loadView()
-        }
+        val binding = LayoutShareRemoteBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        viewModel = ViewModelProvider(this).get(RemoteViewModel::class.java)
+        initToolbar()
+        initItems(binding)
     }
 
-    @Preview
-    @Composable
-    private fun loadView() {
-        remoteViewModel?.apply {
-            val data: Flow<RemoteBean?> by remember {
-                mutableStateOf(this.fetch())
-            }
-            data.collectAsState(initial = null).apply {
-                this.value?.takeIf {
-                    it.isSuccess
-                }?.also { bean ->
-                    Column {
-                        Row(Modifier.horizontalScroll(ScrollState(0))) {
-                            bean.folders?.forEach { folder ->
-                                Button(onClick = { }) {
-                                    Row {
-                                        Text(text = "${folder.name}")
-                                    }
+    private fun initToolbar() {
+        supportActionBar?.title=intent.getStringExtra("title")?:""
 
-                                }
-                            }
-                        }
-                        Column(Modifier.verticalScroll(ScrollState(0))) {
-                            bean.fileItems?.forEach { item ->
+    }
 
-                                Button(onClick = { /*TODO*/ }) {
-                                    Column {
-                                        Icon(
-                                            painter = painterResource(id = item.type.icon),
-                                            contentDescription = null
-                                        )
-                                        Text(text = "${item.name}")
-                                    }
-
-                                }
-                            }
-                        }
-                    }
+    private fun initItems(binding: LayoutShareRemoteBinding) {
+        binding.rvFoldersItem.layoutManager = GridLayoutManager(this, 4)
+        binding.rvFoldersItem.adapter = fileItemAdapter
+        viewModel?.remoteBeanLiveData?.observe(this) {
+            if (it.isSuccess) {
+                fileItems.clear()
+                it.fileItems?.apply {
+                    fileItems.addAll(this)
                 }
 
             }
+
         }
-
-
     }
 }
