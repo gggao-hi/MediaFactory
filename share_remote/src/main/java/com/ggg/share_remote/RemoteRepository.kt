@@ -24,6 +24,9 @@ class RemoteRepository {
                 FileItem("test5", "test5", FileType.WORD()),
                 FileItem("test6", "test6", FileType.EXCEL()),
                 FileItem("test7", "test7", FileType.FOLDER()),
+                FileItem("test8", "test8", FileType.FOLDER()),
+                FileItem("test9", "test9", FileType.FOLDER()),
+                FileItem("test10", "test10", FileType.FOLDER()),
             )
         )
     }

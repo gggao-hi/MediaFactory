@@ -3,24 +3,23 @@ package com.ggg.share_remote
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.ggg.share_remote.databinding.ItemFoldersBinding
+import com.ggg.share_remote.databinding.ItemFoldersTitleBinding
 
-class FolderItemAdapter(private val data: List<FileItem>) :
-    RecyclerView.Adapter<FolderItemAdapter.ItemHolder>() {
+class TitleItemAdapter(private val data: List<FileItem>) :
+    RecyclerView.Adapter<TitleItemAdapter.ItemHolder>() {
     var onItemClick: (item: FileItem) -> Unit = {}
 
-    class ItemHolder(private val binding: ItemFoldersBinding) :
+    class ItemHolder(private val binding: ItemFoldersTitleBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: FileItem) {
-            binding.ivIcon.setImageResource(item.type.icon)
             binding.tvName.text = item.name
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
-        val binding: ItemFoldersBinding =
-            ItemFoldersBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding: ItemFoldersTitleBinding =
+            ItemFoldersTitleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ItemHolder(binding)
     }
 

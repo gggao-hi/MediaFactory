@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
     android:layout_width="100dp"
+    android:paddingVertical="20dp"
     android:layout_height="wrap_content">
 
     <ImageView
@@ -19,6 +20,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="20sp"
+        tool:text="aaa"
+        android:gravity="center"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ivIcon" />
