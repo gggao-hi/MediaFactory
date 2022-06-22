@@ -5,7 +5,8 @@ import com.ggg.base.BaseApplication
 import com.ggg.handler.image.activity.ImageActivity
 import com.ggg.mediafactory.R
 import com.ggg.handler.video.activity.VideoActivity
-import com.ggg.share_remote.ShareRemoteActivity
+import com.ggg.share_remote.declarativeui.ComposeShareRemoteActivity
+import com.ggg.share_remote.imperativeui.ShareRemoteActivity
 
 
 /**
@@ -29,10 +30,17 @@ class EnterRepository {
                     })
                 }
             },
-            EnterBean(activity?.getString(R.string.share_remote) ?: "") {
+            EnterBean(activity?.getString(R.string.share_remote_imperative) ?: "") {
                 BaseApplication.getCurrentActivity()?.apply {
                     startActivity(Intent(this, ShareRemoteActivity::class.java).apply {
-                        putExtra("title", getString(R.string.share_remote))
+                        putExtra("title", getString(R.string.share_remote_imperative))
+                    })
+                }
+            },
+            EnterBean(activity?.getString(R.string.share_remote_declarative) ?: "") {
+                BaseApplication.getCurrentActivity()?.apply {
+                    startActivity(Intent(this, ComposeShareRemoteActivity::class.java).apply {
+                        putExtra("title", getString(R.string.share_remote_declarative))
                     })
                 }
             }

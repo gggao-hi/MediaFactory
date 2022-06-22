@@ -1,13 +1,16 @@
 package com.ggg.share_remote
 
-import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ggg.share_remote.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
 
 
 /**
@@ -16,19 +19,27 @@ import java.io.File
 class RemoteViewModel : ViewModel() {
     private val repository = RemoteRepository()
     val remoteBeanLiveData: MutableLiveData<RemoteBean> = MutableLiveData()
+    var remoteBean by mutableStateOf(RemoteBean(false))
     private val title = mutableListOf<FileItem>()
-    fun fetch(id: String?) {
+    private val folders = mutableListOf<FileItem>()
+
+    fun fetch(id: String) {
         viewModelScope.launch(Dispatchers.Default) {
-            repository.fetchFiles("").apply {
+//            delay(300)
+            repository.fetchFiles(id).apply {
                 when (this) {
                     is ResponseResult.Failed -> setData(RemoteBean(false))
-                    is ResponseResult.Success -> setData(
-                        RemoteBean(
-                            true,
-                            this.files,
-                            parseTitle(id, this.files)
+                    is ResponseResult.Success -> {
+                        setData(
+                            RemoteBean(
+                                true,
+                                this.files,
+                                parseTitle(id, folders)
+                            )
                         )
-                    )
+                        folders.clear()
+                        folders.addAll(this.files)
+                    }
                 }
             }
 
@@ -38,6 +49,7 @@ class RemoteViewModel : ViewModel() {
     private suspend fun setData(bean: RemoteBean) {
         withContext(Dispatchers.Main) {
             remoteBeanLiveData.value = bean
+            remoteBean = bean
         }
     }
 
@@ -53,7 +65,6 @@ class RemoteViewModel : ViewModel() {
                         curIndex = index
                         return@loop
                     }
-                    Log.d("xxx", "index:$index")
                 }
             }
             if (curIndex != -1) {

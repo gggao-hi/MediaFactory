@@ -8,5 +8,6 @@
     <string name="video_handler">视频处理</string>
     <string name="flip_vertical">上下翻转</string>
     <string name="flip_horizontal">左右翻转</string>
-    <string name="share_remote">远程文件</string>
+    <string name="share_remote_imperative">远程文件-命令式UI</string>
+    <string name="share_remote_declarative">远程文件-声明式UI</string>
 </resources>

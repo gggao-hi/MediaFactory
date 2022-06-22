@@ -4,7 +4,10 @@
 
     <application>
         <activity
-            android:name=".ShareRemoteActivity">
+            android:name=".imperativeui.ShareRemoteActivity">
+        </activity>
+        <activity
+            android:name=".declarativeui.ComposeShareRemoteActivity">
         </activity>
     </application>
 
