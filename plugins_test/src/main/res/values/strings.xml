@@ -1,0 +1,4 @@
+<resources>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="test">from Test plugin</string>
+</resources>

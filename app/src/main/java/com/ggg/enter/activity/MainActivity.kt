@@ -21,8 +21,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
-import com.ggg.enter.model.EnterRepository
 import com.ggg.base.ui.theme.MediaFactoryTheme
+import com.ggg.enter.model.EnterRepository
 
 class MainActivity : ComponentActivity() {
     private val enterRepository = EnterRepository()
@@ -73,7 +73,8 @@ class MainActivity : ComponentActivity() {
             PackageManager.PERMISSION_GRANTED
         ) {
             val launcher: ActivityResultLauncher<Array<String>> =
-                registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { }
+                registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+                }
 
             launcher.launch(
                 arrayOf(

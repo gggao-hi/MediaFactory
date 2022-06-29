@@ -25,6 +25,7 @@ open class BaseApplication : Application(), Application.ActivityLifecycleCallbac
             }
             android.os.Process.killProcess(android.os.Process.myPid())
         }
+
     }
 
     override fun onActivityCreated(activity: Activity, p1: Bundle?) {

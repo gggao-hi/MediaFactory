@@ -1,0 +1,17 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+apply from: '../config.gradle'
+
+android {
+    defaultConfig {
+        applicationId "com.ggg.mediafactory"
+    }
+
+}
+dependencies {
+    implementation project(':handler')
+    implementation project(':share_remote')
+
+}
