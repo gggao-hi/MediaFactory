@@ -18,10 +18,12 @@ int VideoHandler::decode(jobject params, jobject surface) {
 
     LOGD("decode:", "input :%s\n", videoPath.c_str());
     LOGD("decode:", "avformat_open_input");
-    if (avformat_open_input(&pFormatCtx, videoPath.c_str(), nullptr, nullptr) != 0) {
+
+    if (avformat_open_input(&pFormatCtx, videoPath.c_str(), av_find_input_format("mp4"), nullptr) != 0) {
         LOGE("decode:", "couldn't open: %s \n", videoPath.c_str());
         return -1;
     }
+    LOGD("decode:", "avformat_open_input finish");
     if (pFormatCtx == nullptr) {
         LOGE("decode:", "pFormatCtx is null");
         return -1;
@@ -30,6 +32,7 @@ int VideoHandler::decode(jobject params, jobject surface) {
         LOGE("decode:", "pFormatCtx->streams is null");
         return -1;
     }
+    LOGD("decode:", "avformat_find_stream_info");
     avformat_find_stream_info(pFormatCtx, nullptr);
     for (int i = 0; i < pFormatCtx->nb_streams; i++) {
         if (pFormatCtx->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
@@ -37,6 +40,8 @@ int VideoHandler::decode(jobject params, jobject surface) {
             break;
         }
     }
+    LOGD("decode:", "avformat_find_stream_info finish videoIndex:%d", videoIndex);
+
     if (pFormatCtx->streams[videoIndex]->codecpar == nullptr) {
         LOGE("decode:", "pFormatCtx->streams[videoIndex]->codecpar is null");
         return -1;
@@ -85,7 +90,7 @@ int VideoHandler::decode(jobject params, jobject surface) {
          pCodecCtx->width, pCodecCtx->height, window_width, window_height);
     imgConvertCtx = sws_getContext(pCodecCtx->width, pCodecCtx->height, pCodecCtx->pix_fmt,
                                    window_width, window_height, AV_PIX_FMT_RGBA,
-                                   SWS_POINT,nullptr, nullptr, nullptr);
+                                   SWS_POINT, nullptr, nullptr, nullptr);
 
     while (av_read_frame(pFormatCtx, packet) >= 0) {
         if (packet->stream_index != videoIndex) { continue; }

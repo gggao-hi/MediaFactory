@@ -104,6 +104,10 @@ videoCommandHandler(JNIEnv *env, jobject clazz, jobject command, jobject surface
     t.join();
 }
 
+JNIEXPORT void JNICALL
+initHandler(JNIEnv *env, jobject clazz, jobject surface){
+
+}
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *jvm, void *reserved) {
     JNIEnv *env = nullptr;
     current_jvm = jvm;
@@ -114,7 +118,8 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *jvm, void *reserved) {
 
     JNINativeMethod methods[] = {{"sendVideoCommand",
                                          "(Lcom/ggg/handler/MediaHandler$VideoCommand;Landroid/view/Surface;Lcom/ggg/handler/MediaHandler$OnHandlerResultListener;)V",
-                                         (void *) videoCommandHandler}};
+                                         (void *) videoCommandHandler},
+                                 {"initVideoHandler", "(Landroid/view/Surface;)V",(void *)initHandler}};
 
     if (env->RegisterNatives(clazz, methods, sizeof(methods) / sizeof(methods[0]))) {
         return -1;
@@ -122,3 +127,4 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *jvm, void *reserved) {
 
     return JNI_VERSION_1_6;
 }
+

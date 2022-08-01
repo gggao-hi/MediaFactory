@@ -3,11 +3,8 @@ package com.ggg.enter.model
 import android.content.Intent
 import com.ggg.base.BaseApplication
 import com.ggg.handler.image.activity.ImageActivity
-import com.ggg.mediafactory.R
 import com.ggg.handler.video.activity.VideoActivity
-import com.ggg.plugins_loader.PluginActivity
-import com.ggg.plugins_loader.PluginsLoader
-import com.ggg.plugins_loader.plugins.TestPluginLoader
+import com.ggg.mediafactory.R
 import com.ggg.share_remote.declarativeui.ComposeShareRemoteActivity
 import com.ggg.share_remote.imperativeui.ShareRemoteActivity
 
@@ -45,11 +42,6 @@ class EnterRepository {
                     startActivity(Intent(this, ComposeShareRemoteActivity::class.java).apply {
                         putExtra("title", getString(R.string.share_remote_declarative))
                     })
-                }
-            },
-            EnterBean(activity?.getString(R.string.plugin_enter_test) ?: "") {
-                BaseApplication.getCurrentActivity()?.apply {
-                    startActivity(Intent(this, PluginActivity::class.java))
                 }
             }
         )

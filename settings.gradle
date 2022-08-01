@@ -11,5 +11,4 @@ include ':handler'
 
 include ':base'
 include ':share_remote'
-include ':plugins_loader'
-include ':plugins_test'
+

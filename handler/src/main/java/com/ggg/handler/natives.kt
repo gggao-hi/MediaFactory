@@ -24,6 +24,8 @@ object MediaHandler {
         }
     }
 
+    external fun  initVideoHandler( surfaceView: Surface?)
+
     fun exeCommand(
         command: VideoCommand,
         surfaceView: Surface?,
@@ -38,7 +40,7 @@ object MediaHandler {
         sendVideoCommand(command, surfaceView, resultListener)
     }
 
-    private external fun sendVideoCommand(
+     external fun sendVideoCommand(
         command: VideoCommand,
         surfaceView: Surface?,
         resultListener: OnHandlerResultListener

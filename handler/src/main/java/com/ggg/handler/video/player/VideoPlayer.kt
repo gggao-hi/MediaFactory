@@ -31,6 +31,7 @@ class VideoPlayer(private val context: Context) {
     fun InitPlayer(height: Dp, videoPath: Flow<String>) {
         val path: String by videoPath.collectAsState(initial = "").apply {
             if (value.isNotEmpty()) {
+                currentVideoPath = value
                 play(value)
             }
         }

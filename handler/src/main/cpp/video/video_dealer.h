@@ -32,22 +32,17 @@ private:
     ANativeWindow *pANWindow;
 
     static void ffmpegLog(void *ptr, int level, const char *fmt, va_list vl) {
-        FILE *fp = fopen("/storage/emulated/0/av_log.txt", "a+");
-        if (fp) {
-            vfprintf(fp, fmt, vl);
-            fflush(fp);
-            fclose(fp);
-        }
+        LOGD("ffmpeg", fmt, vl);
     }
 
     void init() {
         av_log_set_callback(ffmpegLog);
-        avformat_network_init();
+//        avformat_network_init();
         pFormatCtx = avformat_alloc_context();
     }
 
     void unInit() {
-        avformat_network_deinit();
+//        avformat_network_deinit();
     }
 
     map<string, string> *parseParams(jobject param) {
