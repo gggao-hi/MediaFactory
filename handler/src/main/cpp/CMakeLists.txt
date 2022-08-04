@@ -29,6 +29,7 @@ message("${CMAKE_ANDROID_ARCH_ABI}")
 set(distribution_DIR ${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_ANDROID_ARCH_ABI}/lib)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_ANDROID_ARCH_ABI}/include)
+
 add_library( avcodec SHARED IMPORTED)
 set_target_properties( avcodec PROPERTIES IMPORTED_LOCATION ${distribution_DIR}/libavcodec.so)
 
@@ -50,6 +51,12 @@ set_target_properties( swscale PROPERTIES IMPORTED_LOCATION ${distribution_DIR}/
 add_library( swresample SHARED IMPORTED)
 set_target_properties( swresample PROPERTIES IMPORTED_LOCATION ${distribution_DIR}/libswresample.so)
 
+add_library( postproc SHARED IMPORTED)
+set_target_properties( postproc PROPERTIES IMPORTED_LOCATION ${distribution_DIR}/libpostproc.so)
+
+add_library( x264 SHARED IMPORTED)
+set_target_properties( x264 PROPERTIES IMPORTED_LOCATION ${distribution_DIR}/libx264.so)
+
 find_library(
         log-lib
         log)
@@ -68,6 +75,8 @@ target_link_libraries( # Specifies the target library.
         avutil
         swscale
         swresample
+        postproc
+        x264
         jnigraphics
         ${log-lib}
         android)
