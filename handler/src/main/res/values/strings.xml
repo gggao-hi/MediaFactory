@@ -6,11 +6,11 @@
     <string name="original">照片原图</string>
     <string name="image_handler">图片处理</string>
     <string name="video_handler">视频处理</string>
+    <string name="video_record">视频录制</string>
+    <string name="camera_permission_denied">请开启摄像头权限</string>
     <string name="flip_vertical">上下翻转</string>
     <string name="flip_horizontal">左右翻转</string>
     <string name="vide_start_record">开始录制</string>
     <string name="video_in_recording">录制中..</string>
-    <string name="share_remote_imperative">远程文件-命令式UI</string>
-    <string name="share_remote_declarative">远程文件-声明式UI</string>
-    <string name="plugin_enter_test">打开Plugin Test </string>
+
 </resources>

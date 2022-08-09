@@ -49,7 +49,14 @@ class RecordActivity : ComponentActivity() {
                     modifier = Modifier
                         .width(100.0.dp)
                         .height(50.0.dp),
-                    onClick = { isRecord = !isRecord }) {
+                    onClick = {
+                        isRecord = !isRecord
+                        if (isRecord) {
+                            viewModel?.record()
+                        } else {
+                            viewModel?.stopRecord()
+                        }
+                    }) {
                     Text(
                         text = if (isRecord) getString(R.string.video_in_recording) else getString(R.string.vide_start_record)
                     )
@@ -67,14 +74,14 @@ class RecordActivity : ComponentActivity() {
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT
             )
-            addView(SurfaceView(context).apply {
+            addView(SurfaceView(context).also { surfaceView ->
                 layoutParams = FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.MATCH_PARENT,
                     FrameLayout.LayoutParams.MATCH_PARENT
                 )
-                getHolder().addCallback(object : SurfaceHolder.Callback {
+                surfaceView.holder.addCallback(object : SurfaceHolder.Callback {
                     override fun surfaceCreated(holder: SurfaceHolder) {
-                        viewModel?.loadVideo(holder.surface)
+                        viewModel?.loadVideo(holder.surface, surfaceView.width, surfaceView.height)
                     }
 
                     override fun surfaceChanged(
@@ -91,5 +98,10 @@ class RecordActivity : ComponentActivity() {
                 })
             })
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel?.closeCamera()
     }
 }

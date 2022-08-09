@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="share_remote_imperative">远程文件-命令式UI</string>
+    <string name="share_remote_declarative">远程文件-声明式UI</string>
+    <string name="plugin_enter_test">打开Plugin Test </string>
+</resources>

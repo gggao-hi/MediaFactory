@@ -2,16 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ggg.handler">
 
+    <uses-permission android:name="android.permission.CAMERA" />
     <application>
         <activity
             android:name="com.ggg.handler.image.activity.ImageActivity"
             android:exported="false"
-            android:label="@string/title_activity_image_color"
             android:theme="@style/Theme.MediaFactory.NoActionBar" />
         <activity
             android:name="com.ggg.handler.video.activity.VideoActivity"
             android:exported="false"
-            android:label="@string/title_activity_image_color"
+            android:theme="@style/Theme.MediaFactory.NoActionBar" />
+        <activity
+            android:name="com.ggg.handler.video.activity.RecordActivity"
+            android:exported="false"
             android:theme="@style/Theme.MediaFactory.NoActionBar" />
     </application>
 </manifest>

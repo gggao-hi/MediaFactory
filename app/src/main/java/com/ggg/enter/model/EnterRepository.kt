@@ -3,6 +3,7 @@ package com.ggg.enter.model
 import android.content.Intent
 import com.ggg.base.BaseApplication
 import com.ggg.handler.image.activity.ImageActivity
+import com.ggg.handler.video.activity.RecordActivity
 import com.ggg.handler.video.activity.VideoActivity
 import com.ggg.mediafactory.R
 import com.ggg.share_remote.declarativeui.ComposeShareRemoteActivity
@@ -27,6 +28,13 @@ class EnterRepository {
                 BaseApplication.getCurrentActivity()?.apply {
                     startActivity(Intent(this, VideoActivity::class.java).apply {
                         putExtra("title", getString(R.string.video_handler))
+                    })
+                }
+            },
+            EnterBean(activity?.getString(R.string.video_record) ?: "") {
+                BaseApplication.getCurrentActivity()?.apply {
+                    startActivity(Intent(this, RecordActivity::class.java).apply {
+                        putExtra("title", getString(R.string.video_record))
                     })
                 }
             },
