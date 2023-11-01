@@ -1,0 +1,8 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+apply from: '../config.gradle'
+apply from: '../external_config.gradle'
+
+apply from: '../dependence.gradle'

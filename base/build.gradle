@@ -4,3 +4,7 @@ plugins {
     id 'kotlin-android'
 }
 apply from: '../dependence.gradle'
+
+dependencies {
+    api(':logutils')
+}
