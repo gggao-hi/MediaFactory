@@ -13,12 +13,12 @@ enum ResultCode {
     SUCCESS = 0, FAILED = -1
 };
 struct LogInfo {
-    std::string_view timestamp;
-    std::string_view tag;
-    std::string_view level;
-    std::string_view message;
-    std::string_view pid;
-    std::string_view tid;
+    std::string timestamp;
+    std::string tag;
+    std::string level;
+    std::string message;
+    std::string pid;
+    std::string tid;
     std::exception err;
 };
 enum DurationType {
@@ -36,7 +36,7 @@ struct FileSize {
     FileSizeUnit unit;
 };
 struct LogConfig {
-    std::string_view folderPath;
+    std::string rootPath;
     Duration retentionDuration;
     FileSize maxSizeOfAllZip;
     FileSize oneLogFileSize;
@@ -47,17 +47,19 @@ class WriteFileManager {
 private:
     LogConfig logConfig;
 
-    ResultCode createLogFile(std::string_view filePath);
+    ResultCode openLogFile(std::string fileName, int &fd);
 
-    ResultCode zipFolder(std::string_view folderPath, std::string_view outPath);
+    ResultCode zipFolder(std::string folderPath, std::string outPath);
 
     void registerLogSizeChecker();
 
     void unregisterLogSizeChecker();
 
-    ResultCode deleteLogFolder(std::string_view folderPath);
+    ResultCode deleteLogFolder(std::string folderPath);
 
-    ResultCode deleteLogZip(std::string_view zipPath);
+    ResultCode deleteLogZip(std::string zipPath);
+
+    std::string filePath(std::string fileName);
 
     ResultCode clear();
 
